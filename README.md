@@ -1,7 +1,7 @@
 # susecloud-repocheck
-SUSECloud Update Infrastructure Check for Azure, AWS, GCP
+SUSECloud Update Infrastructure Check for Azure, AWS, GCP PAYG/On-demand Instances
 
-Two requirements:
+Three requirements:
 1. Run as root
 2. Only run on an instance that has repository issue (why else would you)
 
