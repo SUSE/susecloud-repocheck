@@ -375,7 +375,6 @@ function collect_debug_data() {
   fi
 
   ($data_provider > $tmp_dir/metadata.dataprovider 2>&1)
-  cp /var/log/cloudregister $tmp_dir
   cp /var/log/sc-repocheck $tmp_dir
   /bin/ls -lA --time-style=long-iso /etc/products.d/ > $tmp_dir/baseproduct
 
@@ -391,6 +390,7 @@ function collect_debug_data() {
     mv $tmp_dir/registercloudguest.pcap $tmp_dir/registercloudguest.${tcpdumppid}.pcap
   fi
 
+  cp /var/log/cloudregister $tmp_dir
   local filename="${var_location}${SCRIPTNAME}-${date}.tar.xz"
   # compress and move debugging data to /var/log
   tar cfJP $filename $tmp_dir/
