@@ -8,6 +8,7 @@ Three requirements:
 You can run it most easily with this if you have port 443 outbound opened on the instance:  
 bash <(curl -sL https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.sh)
 
-You can also download directly from github
+You can also download directly:
+https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.sh
 
 ![](sc-repo.gif)
