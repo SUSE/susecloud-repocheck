@@ -1,14 +1,14 @@
 # susecloud-repocheck
 SUSECloud Update Infrastructure Check for Azure, AWS, GCP PAYG/On-demand Instances
 
-Three requirements:
-1. Run as root
-2. Only run on an instance that has repository issue (why else would you)
+There are two ways to run.
 
-You can run it most easily with this if you have port 443 outbound opened on the instance:  
+1. If you have outbound https opened on the instance, from the instance, run:
 bash <(curl -sL https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.sh)
 
-You can also download directly:
+2. Download and transfer the script to the instance:
 https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.sh
+Then run:
+./sc-repocheck.sh
 
 ![](sc-repo.gif)
