@@ -324,11 +324,10 @@ function check_region_servers() {
 # Globals:
 #   None
 # Arguments:
-#   None
+#   tmp_dir 
 #######################################
 function registercloudguestnow() {
-  /usr/sbin/registercloudguest --force-new 
-  cecho -c 'yellow' "Check repository access now."
+  strace -f -s 128 -o $1/strace.out /usr/sbin/registercloudguest --force-new 
 }  
 #######################################
 # End of run report
@@ -383,7 +382,7 @@ function collect_debug_data() {
     tcpdumppid=$(echo $!)
   fi	
   
-    registercloudguestnow
+    registercloudguestnow $tmp_dir
 
   if [[ "$TCPDUMP_OFF" -eq 0 ]]; then
     kill -13 ${tcpdumppid}
@@ -395,6 +394,7 @@ function collect_debug_data() {
   # compress and move debugging data to /var/log
   tar cfJP $filename $tmp_dir/
   cecho -c 'yellow' "Debug data location: $filename"
+  cecho -c 'yellow' "Check repository access now."
 }
 
 #######################################
