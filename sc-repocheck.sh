@@ -376,6 +376,8 @@ function collect_debug_data() {
   ($data_provider > $tmp_dir/metadata.dataprovider 2>&1)
   cp /var/log/sc-repocheck $tmp_dir
   /bin/ls -lA --time-style=long-iso /etc/products.d/ > $tmp_dir/baseproduct
+  zypper lr > $tmp_dir/zypper-lr
+  zypper ls > $tmp_dir/zypper-ls
 
   if [[ "$TCPDUMP_OFF" -eq 0 ]]; then
     tcpdump -s0 -C 100 -W 1 -w $tmp_dir/registercloudguest.pcap tcp port 443 or tcp port 80 2> /dev/null &
