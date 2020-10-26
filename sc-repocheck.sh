@@ -22,14 +22,6 @@ COUNT=0
 # Header display to user
 #######################################
 function header() {
-  # Need confirmation from user to run
-  cecho -c 'yellow' "!!THIS SCRIPT SHOULD ONLY BE USED IF INSTANCE HAS REPOSITORY ISSUES!!"
-  read -p "Are you sure you want to continue? [y/n] " -n 1 -r
-  echo
-  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-    cecho -c 'yellow' "Press [Y] or [y] next time to continue check"
-	safe_exit
-  fi
   cecho -c 'bold' "## SUSECLOUD-REPOCHECK ##"
   cecho -c 'bold' "`date`"
 }
