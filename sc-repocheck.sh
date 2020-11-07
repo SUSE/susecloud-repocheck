@@ -371,7 +371,7 @@ function collect_debug_data() {
   zypper lr > $tmp_dir/zypper-lr-before
   zypper ls > $tmp_dir/zypper-ls-before
   cat /etc/hosts > $tmp_dir/etc-hosts-before
-  curl --connect-timeout 5 --trace-ascii $tmp_dir/rmt-curl-https.trace --digest --remote-time --fail https://$PATTERN1/api/health/status
+  curl -s --connect-timeout 5 --trace-ascii $tmp_dir/rmt-curl-https.trace --digest --remote-time --fail https://$PATTERN1/api/health/status > /dev/null
 
 
   if [[ "$TCPDUMP_OFF" -eq 0 ]]; then
