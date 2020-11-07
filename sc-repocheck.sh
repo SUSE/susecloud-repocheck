@@ -319,7 +319,7 @@ function check_region_servers() {
 #   tmp_dir 
 #######################################
 function registercloudguestnow() {
-  strace -f -s 128 -o $1/strace.out /usr/sbin/registercloudguest --force-new 
+  strace -fttTyy -s 256 -o $1/strace.out /usr/sbin/registercloudguest --force-new 
 }  
 #######################################
 # End of run report
