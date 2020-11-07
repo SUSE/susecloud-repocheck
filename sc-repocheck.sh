@@ -350,7 +350,7 @@ function collect_debug_data() {
   cecho -c 'yellow' "Collecting debug data. Please wait..."
   local date=$(date +"%Y-%m-%d_%H-%M-%S")
   local var_location="/var/log/"
-  tmp_dir="/tmp/${scriptName}.$RANDOM.$$"
+  tmp_dir="/tmp/${SCRIPTNAME}.$RANDOM.$$"
   (umask 077 && mkdir "${tmp_dir}") || { 
   die "Could not create temporary directory! Exiting."
   }
