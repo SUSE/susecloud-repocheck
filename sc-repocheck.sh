@@ -395,7 +395,7 @@ function collect_debug_data() {
 
   local filename="${var_location}${SCRIPTNAME}-${date}.tar.xz"
   # compress and move debugging data to /var/log
-  tar cfJP $filename $tmp_dir/
+  tar J -C /tmp/ -cf $filename ${SCRIPTNAME}
   cecho -c 'yellow' "Debug data location: $filename"
   cecho -c 'yellow' "Check repository access now."
 }
