@@ -31,7 +31,7 @@ function header() {
 # Check /etc/hosts files for problems and fix if there are
 # Globals:
 #   ETC_HOSTS
-#	PATTERN1
+#	  PATTERN1
 #   PATTERN2
 # Arguments:
 #   None
@@ -371,6 +371,8 @@ function collect_debug_data() {
   zypper lr > $tmp_dir/zypper-lr-before
   zypper ls > $tmp_dir/zypper-ls-before
   cat /etc/hosts > $tmp_dir/etc-hosts-before
+  curl --connect-timeout 5 --trace-ascii $tmp_dir/rmt-curl-https.trace --digest --remote-time --fail https://$PATTERN1/api/health/status
+
 
   if [[ "$TCPDUMP_OFF" -eq 0 ]]; then
     tcpdump -s0 -C 100 -W 1 -w $tmp_dir/registercloudguest.pcap tcp port 443 or tcp port 80 2> /dev/null &
