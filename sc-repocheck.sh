@@ -77,11 +77,11 @@ function delete_hosts() {
 #######################################
 function framework() {
 #Check which framework script is checking
-  if dmidecode | grep -q Amazon; then
+  if dmidecode | grep -qi Amazon; then
 	FRAMEWORK="ec2"
-  elif dmidecode | grep -q Google; then
+  elif dmidecode | grep -qi Google; then
 	FRAMEWORK="gce"
-  elif dmidecode | grep -q Microsoft; then
+  elif dmidecode | grep -qi Microsoft; then
 	FRAMEWORK="azure"
   else
     cecho -c 'red' "No supported framework. Exiting"
