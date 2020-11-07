@@ -258,7 +258,7 @@ function check_metadata() {
 	local CMD="xml_grep --pretty_print --strict 'server[@region=\"$check_region\"]' | grep server | awk {'print \$2'} | cut -d '\"' -f2"
 	# Get SMT servers that are in region
     local get_smt="$(echo ${!company} | eval $CMD)"
-	IFS=" " read -a smt_servers <<< $get_smt
+    smt_servers=( $get_smt )
   fi
 }
 
