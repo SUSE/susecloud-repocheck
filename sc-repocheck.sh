@@ -2,7 +2,7 @@
 #
 # Perform instance check and attempt fixes for registration to SUSE Update Infrastructure.
 #
-VERSION="1.0.0"
+VERSION="1.0.1"
 SCRIPTNAME="sc-repocheck"
 # Clean the environment
 PATH="/sbin:/usr/sbin:/usr/local/sbin:/usr/local/bin:/bin:/usr/bin"
@@ -22,7 +22,7 @@ COUNT=0
 # Header display to user
 #######################################
 function header() {
-  cecho -c 'bold' "## SUSECLOUD-REPOCHECK ##"
+  cecho -c 'bold' "## SUSECLOUD-REPOCHECK v$VERSION##"
   cecho -c 'bold' "`date`"
 }
 
