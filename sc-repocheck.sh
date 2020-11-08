@@ -300,7 +300,9 @@ function check_current_smt() {
 function csp_specific_checks() {
   cecho -c 'bold' "-Performing cloud provider specific checks"
   if [[ "${FRAMEWORK}" == "azure" ]]; then
+    safe_exit
   elif [[ "${FRAMEWORK}" == "ec2" ]]; then
+    safe_exit
   elif [[ "${FRAMEWORK}" == "gce" ]]; then
     if (getent hosts metadata.google.internal > /dev/null); then
       safe_exit
