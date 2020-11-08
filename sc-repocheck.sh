@@ -300,12 +300,12 @@ function check_current_smt() {
 function csp_specific_checks() {
   cecho -c 'bold' "-Performing cloud provider specific checks"
   if [[ "${FRAMEWORK}" == "azure" ]]; then
-    safe_exit
+    break
   elif [[ "${FRAMEWORK}" == "ec2" ]]; then
-    safe_exit
+    break
   elif [[ "${FRAMEWORK}" == "gce" ]]; then
     if (getent hosts metadata.google.internal > /dev/null); then
-      safe_exit
+      break
     else
       cecho -c 'red' "GCE instance missing metadata /etc/hosts record"
       cecho -c 'red' "Add to /etc/hosts: 169.254.169.254 metadata.google.internal metadata.google.internal"
