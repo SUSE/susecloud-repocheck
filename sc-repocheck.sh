@@ -291,31 +291,6 @@ function check_current_smt() {
 }  
 
 #######################################
-# Perform Cloud Provider Specific Checks
-# Globals:
-#   None
-# Arguments:
-#   None
-#######################################
-function csp_specific_checks() {
-  cecho -c 'bold' "-Performing cloud provider specific checks"
-  if [[ "${FRAMEWORK}" == "azure" ]]; then
-    cecho -c 'green' "Cloud Provider Checks OK"
-    break
-  elif [[ "${FRAMEWORK}" == "ec2" ]]; then
-    cecho -c 'green' "Cloud Provider Checks OK"
-    break
-  elif [[ "${FRAMEWORK}" == "gce" ]]; then
-    if (getent hosts metadata.google.internal > /dev/null); then
-      cecho -c 'green' "Cloud Provider Checks OK"
-    else
-      cecho -c 'red' "PROBLEM: GCE instance missing metadata /etc/hosts record"
-      cecho -c 'red' "Add to /etc/hosts: 169.254.169.254 metadata.google.internal metadata.google.internal"
-    fi
-  fi
-}
-
-#######################################
 # Check if the instance has access to at least 1 region server over https
 # Globals:
 #   None
@@ -570,7 +545,6 @@ function main_script() {
   check_hosts
   check_baseproduct
   check_regionclient_version
-  csp_specific_checks
   report
   footer
 }
