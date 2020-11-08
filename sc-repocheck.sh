@@ -307,7 +307,7 @@ function csp_specific_checks() {
     break
   elif [[ "${FRAMEWORK}" == "gce" ]]; then
     if (getent hosts metadata.google.internal > /dev/null); then
-      break
+      cecho -c 'green' "Cloud Provider Checks OK"
     else
       cecho -c 'red' "PROBLEM: GCE instance missing metadata /etc/hosts record"
       cecho -c 'red' "Add to /etc/hosts: 169.254.169.254 metadata.google.internal metadata.google.internal"
