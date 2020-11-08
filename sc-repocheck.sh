@@ -23,6 +23,8 @@ COUNT=0
 #######################################
 function header() {
   cecho -c 'bold' "## SUSECLOUD-REPOCHECK ##"
+  cecho -c 'bold' "Report bugs https://github.com/rfparedes/susecloud-repocheck/issues"
+  sleep 1
   cecho -c 'bold' "`date`"
 }
 
