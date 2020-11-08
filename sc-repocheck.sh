@@ -255,8 +255,8 @@ function check_metadata() {
 	  safe_exit
   else
     cecho -c 'green' "Metadata OK"
-	local CMD="xml_grep --pretty_print --strict 'server[@region=\"$check_region\"]' | grep server | awk {'print \$2'} | cut -d '\"' -f2"
-	# Get SMT servers that are in region
+    local CMD="grep $check_region | grep smt | grep -o '[0-9]\+[.][0-9]\+[.][0-9]\+[.][0-9]\+' | tr '\n' ' '"
+	  # Get SMT servers that are in region
     local get_smt="$(echo ${!company} | eval $CMD)"
     smt_servers=( $get_smt )
   fi
