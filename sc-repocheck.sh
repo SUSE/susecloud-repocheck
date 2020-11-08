@@ -307,6 +307,7 @@ function csp_specific_checks() {
     else
       cecho -c 'red' "GCE instance missing metadata /etc/hosts record"
       cecho -c 'red' "Add to /etc/hosts: 169.254.169.254 metadata.google.internal metadata.google.internal"
+    fi
   fi
 }
 
