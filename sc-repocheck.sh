@@ -256,7 +256,7 @@ function check_metadata() {
     local check_region="$(timeout 5 gcemetadata --query instance --zone 2>/dev/null | cut -d/ -f4 | rev | cut -c 3- | rev)"
   fi
 
-  if [[ -z "${check_region}" ]]; then
+  if [[ -z "${check_region}" ]] || [[ ${#check_region} -gt 25 ]]; then
 	  cecho -c 'red' "PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254"
 	  collect_debug_data
 	  safe_exit
