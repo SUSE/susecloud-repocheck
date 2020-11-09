@@ -2,7 +2,7 @@
 #
 # Perform instance check and attempt fixes for registration to SUSE Update Infrastructure.
 #
-VERSION="1.0.1"
+VERSION="1.0.2"
 SCRIPTNAME="sc-repocheck"
 # Clean the environment
 PATH="/sbin:/usr/sbin:/usr/local/sbin:/usr/local/bin:/bin:/usr/bin"
