@@ -262,9 +262,9 @@ function check_metadata() {
 	  safe_exit
   else
     cecho -c 'green' "Metadata OK"
-    local CMD="grep $check_region | grep smt | grep -o '[0-9]\+[.][0-9]\+[.][0-9]\+[.][0-9]\+' | tr '\n' ' '"
+    local CMD="grep -w $check_region | grep smt | grep -o '[0-9]\+[.][0-9]\+[.][0-9]\+[.][0-9]\+' | tr '\n' ' '"
 	  # Get SMT servers that are in region
-    local get_smt="$(echo ${!company} | eval $CMD)"
+    local get_smt="$(echo "${!company}" | eval $CMD)"
     smt_servers=( $get_smt )
   fi
 }
