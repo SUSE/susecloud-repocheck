@@ -363,13 +363,13 @@ function collect_debug_data() {
   }
   local data_provider="$(cat /etc/regionserverclnt.cfg | grep dataProvider | cut -d "=" -f2)" 
   if [[ "${FRAMEWORK}" == "azure" ]]; then
-    /usr/bin/azuremetadata --api latest > $tmp_dir/azuremetadata.latest 2>&1
-    /usr/bin/azuremetadata > $tmp_dir/azuremetadata.default 2>&1
+    azuremetadata --api latest > $tmp_dir/azuremetadata.latest 2>&1
+    azuremetadata > $tmp_dir/azuremetadata.default 2>&1
   elif [[ "${FRAMEWORK}" == "ec2" ]]; then
-    /usr/bin/ec2metadata --api latest > $tmp_dir/ec2metadata.latest 2>&1
-    /usr/bin/ec2metadata > $tmp_dir/ec2metadata.default 2>&1
+    ec2metadata --api latest > $tmp_dir/ec2metadata.latest 2>&1
+    ec2metadata > $tmp_dir/ec2metadata.default 2>&1
   elif [[ "${FRAMEWORK}" == "gce" ]]; then
-    /usr/bin/gcemetadata > $tmp_dir/gcemetadata.default 2>&1
+    gcemetadata > $tmp_dir/gcemetadata.default 2>&1
   fi
 
   ($data_provider > $tmp_dir/metadata.dataprovider 2>&1)
