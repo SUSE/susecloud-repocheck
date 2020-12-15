@@ -2,7 +2,7 @@
 #
 # Perform instance check and attempt fixes for registration to SUSE Update Infrastructure.
 #
-VERSION="1.0.3"
+VERSION="1.0.4"
 SCRIPTNAME="sc-repocheck"
 # Clean the environment
 PATH="/sbin:/usr/sbin:/usr/local/sbin:/usr/local/bin:/bin:/usr/bin"
@@ -163,6 +163,7 @@ function check_http() {
 	  if [ $http_return_code -ne "200" ]; then
         cecho -c 'red' "PROBLEM: http access issue. Open port 80 to SMT servers:"
         cecho -c 'red' "${smt_servers[*]}"
+	    collect_debug_data
 	    safe_exit
 	  else 
 	    cecho -c 'green' "http access OK"
@@ -186,6 +187,7 @@ function check_https() {
 	if [ $https_return_code -ne "200" ]; then
 	  cecho -c 'red' "PROBLEM: https access issue. Open port 443 to SMT servers:"
 	  cecho -c 'red' "${smt_servers[*]}"
+	  collect_debug_data
 	  safe_exit
 	else
       cecho -c 'green' "https access OK"
@@ -230,6 +232,7 @@ function check_regionclient_version() {
   if verlt $installed_version $required_version; then
 	cecho -c 'red' "PROBLEM: Update infrastructure packages need to be updated manually"
 	cecho -c 'red' "Follow Situation 4 at https://www.suse.com/support/kb/doc/?id=000019633"
+	collect_debug_data
 	safe_exit
   else 
 	cecho -c 'green' "cloud-regionsrv-client OK"
@@ -312,6 +315,7 @@ function check_region_servers() {
   if [ $good_count -eq 0 ]; then
 	cecho -c 'red' "PROBLEM: No access to a region server. Open port 443 to a region server:"
 	cecho -c 'red' "${region_servers[*]}"
+	collect_debug_data
 	safe_exit
   else
     cecho -c 'green' "region server access OK"
