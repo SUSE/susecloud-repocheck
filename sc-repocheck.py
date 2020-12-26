@@ -2050,7 +2050,7 @@ def check_metadata(framework, args):
             location = location.split('-', 2)
             location = location[0] + "-" + location[1]
         
-    elif framework == "aws":
+    elif framework == "ec2":
         instance_api_version = "2008-02-01"
         instance_endpoint = metadata_base_url + "/latest/meta-data/placement/region"
         request = urllib.request.Request(
