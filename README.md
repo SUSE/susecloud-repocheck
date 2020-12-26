@@ -11,4 +11,4 @@ https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repochec
 Then run:  
 python3 sc-repocheck.py
 
--SUSE Premium Services
+Developed by SUSE Premium Services
