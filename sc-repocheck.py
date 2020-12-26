@@ -1937,7 +1937,7 @@ def check_current_rmt(framework, rmt_servers):
     except:
         logging.error("Cannot get IP of RMT server entry.")
     else:
-        logging.info("PROBLEM: SMT server entry is for wrong region.")
+        logging.warning("PROBLEM: SMT server entry is for wrong region.")
         check_hosts(framework, True)
 
 # ----------------------------------------------------------------------------
@@ -1971,11 +1971,11 @@ def check_hosts(framework, delete_record):
             new_hosts_content.append(entry)
 
         if entry_count == 0 and delete_record == False:
-            logging.info("No smt records exist.")
+            logging.warning("No smt records exist.")
         elif entry_count == 1 and delete_record == False:
             logging.info("%s OK." % etc_hosts)
         elif entry_count >= 2 or delete_record == True:
-            logging.info("PROBLEM: Multiple or incorrect smt records exist, deleting.")
+            logging.warning("PROBLEM: Multiple or incorrect smt records exist, deleting.")
             with open(etc_hosts, 'w') as hosts_file:
                 for entry in new_hosts_content:
                     hosts_file.write(entry)
@@ -1994,8 +1994,8 @@ def check_http(rmt_servers):
         try:
             requests.get('http://' + server + '/rmt.crt')
         except:
-                logging.info("PROBLEM: http access issue. Open port 80 to RMT servers:")
-                logging.info(rmt_servers)
+                logging.warning("PROBLEM: http access issue. Open port 80 to RMT servers:")
+                logging.warning(rmt_servers)
                 problem_count += 1
                 return
     logging.info("http access OK.")
@@ -2010,8 +2010,8 @@ def check_https(rmt_servers):
         try:
             requests.get('https://' + server + '/api/health/status', verify=False)
         except:
-            logging.info("PROBLEM: https access issue. Open port 443 to RMT servers:")
-            logging.info(rmt_servers)
+            logging.warning("PROBLEM: https access issue. Open port 443 to RMT servers:")
+            logging.warning(rmt_servers)
             problem_count += 1
             return
     logging.info("https access OK.")
@@ -2030,7 +2030,7 @@ def check_metadata(framework, args):
         try:
             r = requests.get(instance_endpoint, headers=headers)
         except:
-            logging.info("PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254.")
+            logging.warning("PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254.")
             collect_debug_data(framework, args, True)
             sys.exit()
         else:
@@ -2042,7 +2042,7 @@ def check_metadata(framework, args):
         try:
             r = requests.get(instance_endpoint, headers=headers)
         except:
-            logging.info("PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254.")
+            logging.warning("PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254.")
             collect_debug_data(framework, args, True)
             sys.exit()     
         else:     
@@ -2065,7 +2065,7 @@ def check_metadata(framework, args):
         try:
             r = requests.get(instance_endpoint, headers=request_header)
         except:
-            logging.info("PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254.")
+            logging.warning("PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254.")
             collect_debug_data(framework, args, True)
             sys.exit()     
         else:        
@@ -2087,14 +2087,14 @@ def check_pkg_versions(framework):
         ver = 0
     
     if (ver > required_version) - (ver < required_version) == -1:
-        logging.info("PROBLEM: Update infrastructure packages need to be updated.")
+        logging.warning("PROBLEM: Update infrastructure packages need to be updated.")
         logging.info("Attempting to upgrade packages.")
         ret = upgrade_packages(framework)
 
         if ret == 1:
-            logging.info("PROBLEM: Update infrastructure packages need to be updated manually.")
-            logging.info("Follow Situation 4 at https://www.suse.com/support/kb/doc/?id=000019633")
-            logging.info("Cannot continue. Exiting.")
+            logging.warning("PROBLEM: Update infrastructure packages need to be updated manually.")
+            logging.warning("Follow Situation 4 at https://www.suse.com/support/kb/doc/?id=000019633")
+            logging.warning("Cannot continue. Exiting.")
             sys.exit()
     logging.info("Package versions OK.")
 
@@ -2129,7 +2129,8 @@ def collect_debug_data(framework, disable_tcpdump, disable_metadata_collect):
     filename = "_".join([SCRIPT_NAME, suffix])
     tmp_dir="/tmp/" + filename
     tarball_name = os.path.join(var_location,filename + ".tar.xz")
-    logging.info("Collecting debug data. Please wait 1-2 minutes.")
+    logging.info("Collecting debug data. Please wait 1-2 minutes maybe longer,")
+    logging.info("depending on machine type.")
     try:
         os.mkdir(tmp_dir)
     except OSError:
@@ -2291,7 +2292,7 @@ def get_framework():
     elif "google" in dmidecode_output:
         framework = "gce"
     else:
-        logging.info("No supported framework. Quitting.")
+        logging.error("No supported framework. Quitting.")
         sys.exit()
     return framework
 
@@ -2362,9 +2363,9 @@ def report():
     if problem_count == 0:
         logging.info("EVERYTHING OK.")
     elif problem_count == 1:
-        logging.info("There was 1 problem.")
+        logging.warning("There was 1 problem.")
     else:
-        logging.info("There were multiple problems.")
+        logging.warning("There were multiple problems.")
 
 # ----------------------------------------------------------------------------
 def start_logging():
