@@ -10,5 +10,3 @@ bash <(curl -sL https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/
 https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.sh  
 Then run:  
 ./sc-repocheck.sh
-
-![](sc-repo.gif)
