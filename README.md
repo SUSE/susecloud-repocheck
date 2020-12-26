@@ -10,3 +10,5 @@ python3 <(curl -sL https://raw.githubusercontent.com/rfparedes/susecloud-repoche
 https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.py 
 Then run:  
 python3 sc-repocheck.py
+
+-SUSE Premium Services
