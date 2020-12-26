@@ -290,8 +290,7 @@ function check_current_smt() {
 
   if [[ ! "${smt_servers[@]}" =~ "${smt_ip}" ]]; then
     cecho -c 'red' "PROBLEM: SMT server entry is for wrong region"
-  fi
-}  
+  fi 
 
 #######################################
 # Check if the instance has access to at least 1 region server over https
