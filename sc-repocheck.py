@@ -1930,15 +1930,18 @@ def check_baseproduct():
 def check_current_rmt(framework, rmt_servers):
     """Check if current smt server in /etc/hosts is region correct"""
     domain_name = ("smt-" + framework + ".susecloud.net")
-    logging.info("Checking SMT server entry is for correct region.")
+    logging.info("Checking RMT server entry is for correct region.")
     try:
         if socket.gethostbyname(domain_name) in rmt_servers:
             logging.info("RMT server entry OK.")
+        else:
+            logging.warning("PROBLEM: RMT server entry is for wrong region.")
+            problem_count += 1
+            check_hosts(framework, True)
+
     except:
         logging.error("Cannot get IP of RMT server entry.")
-    else:
-        logging.warning("PROBLEM: SMT server entry is for wrong region.")
-        check_hosts(framework, True)
+
 
 # ----------------------------------------------------------------------------
 def check_hosts(framework, delete_record):
@@ -1971,11 +1974,11 @@ def check_hosts(framework, delete_record):
             new_hosts_content.append(entry)
 
         if entry_count == 0 and delete_record == False:
-            logging.warning("No smt records exist.")
+            logging.warning("No rmt records exist.")
         elif entry_count == 1 and delete_record == False:
             logging.info("%s OK." % etc_hosts)
         elif entry_count >= 2 or delete_record == True:
-            logging.warning("PROBLEM: Multiple or incorrect smt records exist, deleting.")
+            logging.warning("PROBLEM: Multiple or incorrect rmt records exist, deleting.")
             with open(etc_hosts, 'w') as hosts_file:
                 for entry in new_hosts_content:
                     hosts_file.write(entry)
@@ -2129,8 +2132,7 @@ def collect_debug_data(framework, disable_tcpdump, disable_metadata_collect):
     filename = "_".join([SCRIPT_NAME, suffix])
     tmp_dir="/tmp/" + filename
     tarball_name = os.path.join(var_location,filename + ".tar.xz")
-    logging.info("Collecting debug data. Please wait 1-2 minutes maybe longer,")
-    logging.info("depending on machine type.")
+    logging.info("Collecting debug data. Please wait 1-2 minutes maybe longer, depending on machine type.")
     try:
         os.mkdir(tmp_dir)
     except OSError:
