@@ -21,7 +21,7 @@ import urllib.request
 from requests.packages import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-VERSION = "1.0.4"
+VERSION = "1.0.5"
 SCRIPT_NAME = "sc-repocheck"
 BASEPRODUCT_FILE = "/etc/products.d/baseproduct"
 pint_data = {}
@@ -2140,26 +2140,35 @@ def collect_debug_data(framework, disable_tcpdump, disable_metadata_collect):
         return
 
     if disable_metadata_collect == False:
-        if framework == "azure":
-            with open(os.path.join(tmp_dir, "azuremetadata.latest"), "wb") as file:
-                file.write(subprocess.check_output(['azuremetadata', '--api', 'latest']))
 
-            with open(os.path.join(tmp_dir, "azuremetadata.default"), "wb") as file:
-                file.write(subprocess.check_output(['azuremetadata']))
+        try:
+            if framework == "azure":
+                with open(os.path.join(tmp_dir, "azuremetadata.latest"), "wb") as file:
+                    file.write(subprocess.check_output(['azuremetadata', '--api', 'latest']))
 
-        elif framework == "ec2":
-            with open(os.path.join(tmp_dir, "ec2metadata.latest"), "wb") as file:
-                file.write(subprocess.check_output(['ec2metadata', '--api', 'latest']))
-            with open(os.path.join(tmp_dir, "ec2metadata.default"), "wb") as file:
-                file.write(subprocess.check_output(['ec2metadata']))
+                with open(os.path.join(tmp_dir, "azuremetadata.default"), "wb") as file:
+                    file.write(subprocess.check_output(['azuremetadata']))
 
-        elif framework == "gce":
-            with open(os.path.join(tmp_dir, "gcemetadata.default"), "wb") as file:
-                file.write(subprocess.check_output(['gcemetadata']))
+            elif framework == "ec2":
+                with open(os.path.join(tmp_dir, "ec2metadata.latest"), "wb") as file:
+                    file.write(subprocess.check_output(['ec2metadata', '--api', 'latest']))
+                with open(os.path.join(tmp_dir, "ec2metadata.default"), "wb") as file:
+                    file.write(subprocess.check_output(['ec2metadata']))
 
-        cmd = get_dataprovider()
-        with open(os.path.join(tmp_dir, "metadata.dataprovider"), "wb") as file:
-            file.write(subprocess.check_output(shlex.split(cmd)))
+            elif framework == "gce":
+                with open(os.path.join(tmp_dir, "gcemetadata.default"), "wb") as file:
+                    file.write(subprocess.check_output(['gcemetadata']))
+
+            cmd = get_dataprovider()
+            with open(os.path.join(tmp_dir, "metadata.dataprovider"), "wb") as file:
+                file.write(subprocess.check_output(shlex.split(cmd)))
+        except:
+            if framework == "azure":
+                logging.error("PROBLEM: Issue with azuremetadata output. Check metadata access.")
+            elif framework == "ec2":
+                logging.error("PROBLEM: Issue with ec2metadata output. Check metadata access.")
+            elif framework == "gce":
+                logging.error("PROBLEM: Issue with gcemetadata output. Check metadata access.")
 
     shutil.copy("/var/log/sc-repocheck", tmp_dir)
 
@@ -2195,10 +2204,11 @@ def collect_debug_data(framework, disable_tcpdump, disable_metadata_collect):
         p = subprocess.Popen(['tcpdump', '-s0', '-C', '100', '-W', '1', '-w', tcpdump_file, 'tcp', 'port', '443', 'or', 'tcp', 'port', '80'], stderr=subprocess.DEVNULL)
 
     strace_file = os.path.join(tmp_dir, "strace.out")
+
     try:
         subprocess.check_output(['strace', '-f', '-o', strace_file, '/usr/sbin/registercloudguest', '--force-new']).decode("utf-8")
     except:
-        pass
+        logging.error("PROBLEM: Cannot run registercloudguest. There are unknown issues. Please provide debug data.")
 
     if args.t == False:
         p.send_signal(subprocess.signal.SIGTERM)
