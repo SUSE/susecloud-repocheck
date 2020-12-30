@@ -2143,8 +2143,9 @@ def collect_debug_data(framework, disable_tcpdump, disable_metadata_collect):
 
         try:
             if framework == "azure":
-                with open(os.path.join(tmp_dir, "azuremetadata.latest"), "wb") as file:
-                    file.write(subprocess.check_output(['azuremetadata', '--api', 'latest']))
+                if supported_metadata_version == True:
+                    with open(os.path.join(tmp_dir, "azuremetadata.latest"), "wb") as file:
+                        file.write(subprocess.check_output(['azuremetadata', '--api', 'latest']))
 
                 with open(os.path.join(tmp_dir, "azuremetadata.default"), "wb") as file:
                     file.write(subprocess.check_output(['azuremetadata']))
@@ -2395,6 +2396,20 @@ def start_logging():
     except IOError:
         print('Could not open log file "', log_filename, '" for writing.')
         sys.exit(1)
+
+# ----------------------------------------------------------------------------
+def supported_metadata_version():
+    """Check azuremetadata package version as this affects using --api latest"""
+    required_version = "5.1.2"
+    try:
+        ver = subprocess.check_output(['rpm', '-q', 'python3-azuremetadata', '--queryformat', '%{VERSION}']).decode("utf-8")
+    except subprocess.CalledProcessError:
+        ver = 0
+    # metadata version does not meet requirements to us --api latest
+    if (ver > required_version) - (ver < required_version) == -1:
+        return False
+    else:
+        return True
 
 # ----------------------------------------------------------------------------
 def upgrade_packages(framework):
