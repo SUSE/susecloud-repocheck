@@ -2207,7 +2207,7 @@ def collect_debug_data(framework, disable_tcpdump, disable_metadata_collect):
     strace_file = os.path.join(tmp_dir, "strace.out")
 
     try:
-        subprocess.check_output(['strace', '-f', '-o', strace_file, '/usr/sbin/registercloudguest', '--force-new']).decode("utf-8")
+        subprocess.call(['strace', '-f', '-o', strace_file, '/usr/sbin/registercloudguest', '--force-new'])
     except:
         logging.error("PROBLEM: Cannot run registercloudguest. There are unknown issues. Please provide debug data.")
 
