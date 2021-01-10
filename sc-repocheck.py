@@ -21,7 +21,7 @@ import urllib.request
 from requests.packages import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-VERSION = "1.0.7"
+VERSION = "1.1.0"
 SCRIPT_NAME = "sc-repocheck"
 BASEPRODUCT_FILE = "/etc/products.d/baseproduct"
 pint_data = {}
@@ -2105,6 +2105,7 @@ def check_pkg_versions(framework):
 def check_region_servers():
     """Check if the instance has access to one region server over https"""
     global problem_count
+    cert_dir = "/var/lib/regionService/certs"
     logging.info("Checking regionserver access.")
     content = read_regionserverclnt()
     for entry in content:
@@ -2113,14 +2114,22 @@ def check_region_servers():
     entry = entry.rsplit()
     region_servers = entry[2].split(",")
     for region_server in region_servers:
+        certfile = cert_dir + '/' + region_server + '.pem'
         try:
-            requests.get('https://' + region_server + '/regionInfo',verify=False, timeout=5)
-        except:
+            requests.get('https://' + region_server + '/regionInfo',verify=certfile, timeout=5)
+        except requests.exceptions.Timeout:
             logging.info("PROBLEM: No access to a region server. Open port 443 to a region server:")
             logging.info(region_servers)
             problem_count += 1
             return
-
+        except requests.exceptions.SSLError:
+            logging.info("PROBLEM: Certificate issue. Possible MITM proxy issue. Proxy cannot intercept certs in %s.", cert_dir)
+            problem_count += 1
+            return
+        except requests.exceptions.RequestException:
+            logging.info("PROBLEM: No access to a region server.")
+            problem_count += 1
+            return
     logging.info("Region server access OK.")
     return
 
