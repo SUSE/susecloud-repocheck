@@ -21,7 +21,7 @@ import urllib.request
 from requests.packages import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-VERSION = "1.0.6"
+VERSION = "1.0.7"
 SCRIPT_NAME = "sc-repocheck"
 BASEPRODUCT_FILE = "/etc/products.d/baseproduct"
 pint_data = {}
@@ -1995,7 +1995,7 @@ def check_http(rmt_servers):
             return
     for server in rmt_servers:
         try:
-            requests.get('http://' + server + '/rmt.crt')
+            requests.get('http://' + server + '/rmt.crt',timeout=5)
         except:
                 logging.warning("PROBLEM: http access issue. Open port 80 to RMT servers:")
                 logging.warning(rmt_servers)
@@ -2011,7 +2011,7 @@ def check_https(rmt_servers):
     logging.info("Checking https access to RMT servers.")
     for server in rmt_servers:
         try:
-            requests.get('https://' + server + '/api/health/status', verify=False)
+            requests.get('https://' + server + '/api/health/status', verify=False, timeout=5)
         except:
             logging.warning("PROBLEM: https access issue. Open port 443 to RMT servers:")
             logging.warning(rmt_servers)
@@ -2031,7 +2031,7 @@ def check_metadata(framework, args):
         instance_endpoint = metadata_base_url + "/metadata/instance/compute/location?api-version=" + instance_api_version + "&format=text"
         headers = {'Metadata': 'True'}
         try:
-            r = requests.get(instance_endpoint, headers=headers)
+            r = requests.get(instance_endpoint, headers=headers, timeout=5)
         except:
             logging.warning("PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254.")
             collect_debug_data(framework, args, True)
@@ -2043,7 +2043,7 @@ def check_metadata(framework, args):
         instance_endpoint = metadata_base_url + "/computeMetadata/v1/instance/zone"
         headers = {'Metadata-Flavor': 'Google'}
         try:
-            r = requests.get(instance_endpoint, headers=headers)
+            r = requests.get(instance_endpoint, headers=headers, timeout=5)
         except:
             logging.warning("PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254.")
             collect_debug_data(framework, args, True)
@@ -2066,7 +2066,7 @@ def check_metadata(framework, args):
             request_header = {}
         request_header = {'X-aws-ec2-metadata-token': token}
         try:
-            r = requests.get(instance_endpoint, headers=request_header)
+            r = requests.get(instance_endpoint, headers=request_header, timeout=5)
         except:
             logging.warning("PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254.")
             collect_debug_data(framework, args, True)
@@ -2114,7 +2114,7 @@ def check_region_servers():
     region_servers = entry[2].split(",")
     for region_server in region_servers:
         try:
-            requests.get('https://' + region_server + '/regionInfo',verify=False)
+            requests.get('https://' + region_server + '/regionInfo',verify=False, timeout=5)
         except:
             logging.info("PROBLEM: No access to a region server. Open port 443 to a region server:")
             logging.info(region_servers)
