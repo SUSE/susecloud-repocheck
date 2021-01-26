@@ -21,7 +21,7 @@ import urllib.request
 from requests.packages import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 SCRIPT_NAME = "sc-repocheck"
 BASEPRODUCT_FILE = "/etc/products.d/baseproduct"
 pint_data = {}
@@ -1928,20 +1928,21 @@ def check_baseproduct():
 
 # ----------------------------------------------------------------------------
 def check_current_rmt(framework, rmt_servers):
+    global problem_count
     """Check if current smt server in /etc/hosts is region correct"""
     domain_name = ("smt-" + framework + ".susecloud.net")
     logging.info("Checking RMT server entry is for correct region.")
-    try:
-        if socket.gethostbyname(domain_name) in rmt_servers:
-            logging.info("RMT server entry OK.")
-        else:
-            logging.warning("PROBLEM: RMT server entry is for wrong region.")
-            problem_count += 1
-            check_hosts(framework, True)
-
-    except:
-        logging.error("Cannot get IP of RMT server entry.")
-
+    
+    try:    
+      if socket.gethostbyname(domain_name) in rmt_servers:
+        logging.info("RMT server entry OK.")
+    except: 
+      logging.error("Cannot get IP of RMT server entry.")
+    else:
+      if not socket.gethostbyname(domain_name) in rmt_servers:
+        logging.warning("PROBLEM: RMT server entry is for wrong region.")
+        problem_count += 1
+        check_hosts(framework, True)
 
 # ----------------------------------------------------------------------------
 def check_hosts(framework, delete_record):
@@ -1951,7 +1952,6 @@ def check_hosts(framework, delete_record):
     domain_name = ("smt-" + framework + ".susecloud.net")
 
     new_hosts_content = []
-    
     if delete_record == False:
         logging.info("Checking {0} for multiple records.".format(etc_hosts))
 
