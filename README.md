@@ -8,7 +8,6 @@ python3 <(curl -sL https://raw.githubusercontent.com/rfparedes/susecloud-repoche
 
 2. Download and transfer the script to the instance:  
 https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.py 
-
 Then run:  
 python3 sc-repocheck.py
 
