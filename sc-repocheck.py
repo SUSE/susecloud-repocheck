@@ -2153,16 +2153,16 @@ def check_region_servers():
         try:
             requests.get('https://' + region_server + '/regionInfo',verify=certfile, timeout=5)
         except requests.exceptions.Timeout:
-            logging.info("PROBLEM: No access to a region server. Open port 443 to a region server:")
+            logging.warning("PROBLEM: No access to a region server. Open port 443 to a region server:")
             logging.info("Region Server IPs: {0}".format(region_servers))
             problem_count += 1
             return
         except requests.exceptions.SSLError:
-            logging.info("PROBLEM: Certificate issue. Possible MITM proxy issue. Proxy cannot intercept certs in %s.", cert_dir)
+            logging.warning("PROBLEM: Certificate issue. Possible MITM proxy issue. Proxy cannot intercept certs in %s.", cert_dir)
             problem_count += 1
             return
         except requests.exceptions.RequestException:
-            logging.info("PROBLEM: No access to a region server.")
+            logging.warning("PROBLEM: No access to a region server.")
             logging.info("Region Server IPs: {0}".format(region_servers))
             problem_count += 1
             return
