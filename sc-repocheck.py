@@ -16,12 +16,13 @@ import shutil
 import socket
 import subprocess
 import sys
+import time
 import urllib.error
 import urllib.request
 from requests.packages import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-VERSION = "1.1.1"
+VERSION = "1.2.0"
 SCRIPT_NAME = "sc-repocheck"
 BASEPRODUCT_FILE = "/etc/products.d/baseproduct"
 pint_data = {}
@@ -2034,6 +2035,8 @@ def check_metadata(framework, args):
             r = requests.get(instance_endpoint, headers=headers, timeout=5)
         except:
             logging.warning("PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254.")
+            if args.r:
+                return None
             collect_debug_data(framework, args, True)
             sys.exit()
         else:
@@ -2046,6 +2049,8 @@ def check_metadata(framework, args):
             r = requests.get(instance_endpoint, headers=headers, timeout=5)
         except:
             logging.warning("PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254.")
+            if args.r:
+                return None
             collect_debug_data(framework, args, True)
             sys.exit()     
         else:     
@@ -2069,6 +2074,8 @@ def check_metadata(framework, args):
             r = requests.get(instance_endpoint, headers=request_header, timeout=5)
         except:
             logging.warning("PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254.")
+            if args.r:
+                return None
             collect_debug_data(framework, args, True)
             sys.exit()     
         else:        
@@ -2102,6 +2109,34 @@ def check_pkg_versions(framework):
     logging.info("Package versions OK.")
 
 # ----------------------------------------------------------------------------
+def check_realtime(args):
+    """Check access in real-time for troubleshooting with proxy administrators""" 
+    if (args.i == None):
+        args.i = 10
+    print_header()
+    logging.info("Check interval is {0} seconds".format(args.i))
+    logging.info("CTRL-C to exit")
+    logging.info("")
+    time.sleep(3)
+
+    try:
+        while True:
+            framework = get_framework()
+            region = check_metadata(framework, args)
+            if region == None:
+                logging.info("Cannot continue until metadata access is fixed")
+            else:
+                check_region_servers()
+                rmt_servers = get_rmt_servers(framework, region)
+                check_http(rmt_servers)
+                check_https(rmt_servers)
+            logging.info("")
+            time.sleep(args.i)
+    except KeyboardInterrupt:
+        logging.info("Exiting real-time.")
+        sys.exit()
+
+# ----------------------------------------------------------------------------
 def check_region_servers():
     """Check if the instance has access to one region server over https"""
     global problem_count
@@ -2119,7 +2154,7 @@ def check_region_servers():
             requests.get('https://' + region_server + '/regionInfo',verify=certfile, timeout=5)
         except requests.exceptions.Timeout:
             logging.info("PROBLEM: No access to a region server. Open port 443 to a region server:")
-            logging.info(region_servers)
+            logging.info("Region Server IPs: {0}".format(region_servers))
             problem_count += 1
             return
         except requests.exceptions.SSLError:
@@ -2128,10 +2163,11 @@ def check_region_servers():
             return
         except requests.exceptions.RequestException:
             logging.info("PROBLEM: No access to a region server.")
+            logging.info("Region Server IPs: {0}".format(region_servers))
             problem_count += 1
             return
     logging.info("Region server access OK.")
-    return
+    return 
 
 # ----------------------------------------------------------------------------
 def collect_debug_data(framework, disable_tcpdump, disable_metadata_collect):
@@ -2459,10 +2495,22 @@ if __name__ == "__main__":
     action='store_true',
     help='tcpdump disable during debug collection' )
 
+    parser.add_argument('-r',
+    action='store_true',
+    help='Realtime debugging' )
+
+    parser.add_argument('-i',
+    action='store',
+    help='Realtime interval in secs',
+    type=int )
+
     args = parser.parse_args()
 
     if args.version:
         logging.info(SCRIPT_NAME + " " + VERSION)
         sys.exit()
+
+    if args.r:
+        check_realtime(args)
 
     main(args)
