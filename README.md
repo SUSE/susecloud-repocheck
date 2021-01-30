@@ -19,9 +19,9 @@ Download and transfer the script to the instance:
 https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.py 
 
 Then run:  
-python3 -r -i <INTERVAL> sc-repocheck.py
+python3 sc-repocheck.py -r -i <INTERVAL> 
   
-e.g. to check every 30 seconds: python3 -r -i 30 sc-repocheck.py
+e.g. to check every 30 seconds: python3 sc-repocheck.py -r -i 30 
   
  
 
