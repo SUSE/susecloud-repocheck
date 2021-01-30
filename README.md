@@ -8,7 +8,7 @@ SUSECloud Update Infrastructure Check for Azure, AWS, GCP PAYG/On-demand Instanc
 python3 <(curl -sL https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.py)
 
 - Or download and transfer the script to the instance:  
-https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.py 
+https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.py<br>
 Then run:  
 python3 sc-repocheck.py
 
@@ -20,8 +20,7 @@ Download and transfer the script to the instance:
 https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.py 
 
 Then run:  
-python3 sc-repocheck.py -r -i \<INTERVAL>
-  
+python3 sc-repocheck.py -r -i \<INTERVAL><br>
 e.g. to check every 30 seconds: python3 sc-repocheck.py -r -i 30 
   
  
