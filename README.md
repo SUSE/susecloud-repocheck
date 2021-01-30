@@ -13,7 +13,7 @@ python3 sc-repocheck.py
 
 ## To report realtime status while troubleshooting (e.g. while proxy administration is dynamically fixing configuration)
 
-This option allows user to see repocheck report in realtime over a specific internal (default:10 seconds).  This will run in a loop until user cancels so this would ideally be used while security rules are modified or appliances properly configured in realtime.
+This option allows user to see repocheck report in realtime over a specific internal (default:10 seconds).  This will run in a loop until user cancels so this would ideally be used while security rules are modified or appliances configured in realtime.
 
 Download and transfer the script to the instance:  
 https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.py 
