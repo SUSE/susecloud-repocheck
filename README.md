@@ -20,6 +20,7 @@ https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repochec
 
 Then run:  
 python3 -r -i <INTERVAL> sc-repocheck.py
+  
 e.g. to check every 30 seconds: python3 -r -i 30 sc-repocheck.py
   
  
