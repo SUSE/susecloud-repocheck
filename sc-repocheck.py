@@ -2218,7 +2218,7 @@ def check_realtime(args):
             if region == None:
                 logging.info("Cannot continue until metadata access is fixed")
             else:
-                check_region_servers()
+                check_region_servers(region)
                 rmt_servers = get_rmt_servers(framework, region)
                 check_http(rmt_servers)
                 check_https(rmt_servers)
@@ -2229,9 +2229,12 @@ def check_realtime(args):
         sys.exit()
 
 # ----------------------------------------------------------------------------
-def check_region_servers():
+def check_region_servers(region):
     """Check if the instance has access to one region server over https"""
     global problem_count
+    to_cnt = 0
+    se_cnt = 0
+    re_cnt = 0
     cert_dir = "/var/lib/regionService/certs"
     logging.info("Checking regionserver access.")
     content = read_regionserverclnt()
@@ -2243,23 +2246,28 @@ def check_region_servers():
     for region_server in region_servers:
         certfile = cert_dir + '/' + region_server + '.pem'
         try:
-            requests.get('https://' + region_server + '/regionInfo',verify=certfile, timeout=5)
+            requests.get('https://' + region_server + '/regionInfo?regionHint=' + region,verify=certfile, timeout=5)
         except requests.exceptions.Timeout:
-            logging.warning("PROBLEM: No access to a region server. Open port 443 to a region server:")
-            logging.info("Region Server IPs: {0}".format(region_servers))
-            problem_count += 1
-            return
+            to_cnt += 1
         except requests.exceptions.SSLError:
-            logging.warning("PROBLEM: Certificate issue. Possible MITM proxy issue. Proxy cannot intercept certs in %s.", cert_dir)
-            problem_count += 1
-            return
+            se_cnt += 1
         except requests.exceptions.RequestException:
-            logging.warning("PROBLEM: No access to a region server.")
-            logging.info("Region Server IPs: {0}".format(region_servers))
-            problem_count += 1
-            return
-    logging.info("Region server access OK.")
-    return 
+            re_cnt += 1
+    regsrv_cnt = (len(region_servers))
+    if to_cnt == regsrv_cnt:
+        logging.warning("PROBLEM: No access to a region server. Open port 443 to a region server:")
+        logging.info("Region Server IPs: {0}".format(region_servers))
+        problem_count += 1
+    if se_cnt == regsrv_cnt:
+        logging.warning("PROBLEM: Certificate issue. Possible MITM proxy issue. Proxy cannot intercept certs in %s.", cert_dir)
+        problem_count += 1
+    if re_cnt == regsrv_cnt:
+        logging.warning("PROBLEM: No access to a region server.")
+        logging.info("Region Server IPs: {0}".format(region_servers))
+        problem_count += 1
+    if to_cnt != regsrv_cnt and se_cnt != regsrv_cnt and re_cnt != regsrv_cnt:
+        logging.info("Region server access OK.")
+    return
 
 # ----------------------------------------------------------------------------
 def collect_debug_data(framework, disable_tcpdump, disable_metadata_collect):
@@ -2472,9 +2480,9 @@ def main(args):
     framework = get_framework()
     check_pkg_versions(framework)
     check_baseproduct()
-    check_region_servers()
     check_hosts(framework, False)
     region = check_metadata(framework, args)
+    check_region_servers(region)
     rmt_servers = get_rmt_servers(framework, region)
     check_current_rmt(framework, rmt_servers)
     check_http(rmt_servers)
