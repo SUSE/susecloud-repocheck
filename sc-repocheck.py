@@ -2110,9 +2110,10 @@ def check_https_cert(rmt_hostname):
         logging.warning("PROBLEM: MITM proxy misconfiguration. Proxy cannot intercept RMT certs. Exempt {0}.".format(rmt_hostname))
         problem_count += 1
         return
-    except:
-        logging.warning("PROBLEM: RMT cert exception.")
-        problem_count += 1
+    except Exception as ex:      
+        template = "An exception of type {0} occurred."  
+        message = template.format(type(ex).__name__, ex.args)
+        logging.info(message + " Disregarding.")
         return
     logging.info("RMT certs OK.")
     return
@@ -2277,15 +2278,15 @@ def check_region_servers(region):
     regsrv_cnt = (len(region_servers))
     if to_cnt == regsrv_cnt:
         logging.warning("PROBLEM: No access to a region server. Open port 443 to a region server:")
-        logging.info("Region Server IPs: {0}".format(region_servers))
+        logging.warning("Region Server IPs: {0}".format(region_servers))
         problem_count += 1
     if se_cnt == regsrv_cnt:
         logging.warning("PROBLEM: MITM proxy misconfiguration. Proxy cannot intercept certs in %s. Exempt at least one region server.", cert_dir)
-        logging.info("Region Server IPs: {0}".format(region_servers))
+        logging.warning("Region Server IPs: {0}".format(region_servers))
         problem_count += 1
     if re_cnt == regsrv_cnt:
         logging.warning("PROBLEM: No access to a region server.")
-        logging.info("Region Server IPs: {0}".format(region_servers))
+        logging.warning("Region Server IPs: {0}".format(region_servers))
         problem_count += 1
     if to_cnt != regsrv_cnt and se_cnt != regsrv_cnt and re_cnt != regsrv_cnt:
         logging.info("Region server access OK.")
