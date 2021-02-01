@@ -2259,7 +2259,7 @@ def check_region_servers(region):
         logging.info("Region Server IPs: {0}".format(region_servers))
         problem_count += 1
     if se_cnt == regsrv_cnt:
-        logging.warning("PROBLEM: Certificate issue. Possible MITM proxy issue. Proxy cannot intercept certs in %s.", cert_dir)
+        logging.warning("PROBLEM: MITM proxy misconfiguration. Proxy cannot intercept certs in %s. Exempt at least one region server.", cert_dir)
         logging.info("Region Server IPs: {0}".format(region_servers))
         problem_count += 1
     if re_cnt == regsrv_cnt:
