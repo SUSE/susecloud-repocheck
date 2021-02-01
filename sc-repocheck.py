@@ -22,7 +22,7 @@ import urllib.request
 from requests.packages import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-VERSION = "1.2.0"
+VERSION = "1.2.5"
 SCRIPT_NAME = "sc-repocheck"
 BASEPRODUCT_FILE = "/etc/products.d/baseproduct"
 pint_data = {}
@@ -2080,7 +2080,7 @@ def check_hosts(framework, delete_record):
 def check_http(rmt_servers):
     """If httpsOnly isn't true, check for http access to RMT servers"""
     global problem_count
-    logging.info("Checking http access to RMT servers.")
+    logging.info("Checking http port access to RMT servers.")
     content = read_regionserverclnt()
     for entry in content:
         if 'httpsOnly = true' in entry:
@@ -2096,12 +2096,32 @@ def check_http(rmt_servers):
                 return
     logging.info("http access OK.")
     return
-        
+
 # ----------------------------------------------------------------------------
-def check_https(rmt_servers):
+def check_https_cert(rmt_hostname):
+    """Check https cert"""
+    global problem_count
+
+    logging.info("Checking https access using RMT certs.")
+    certfiles = [filename for filename in os.listdir('/usr/share/pki/trust/anchors') if filename.startswith("registration_server")]  
+    try:
+        requests.get('https://' + rmt_hostname + '/api/health/status', verify='/usr/share/pki/trust/anchors/'+certfiles[0],timeout=5)
+    except requests.exceptions.SSLError:
+        logging.warning("PROBLEM: MITM proxy misconfiguration. Proxy cannot intercept RMT certs. Exempt {0}.".format(rmt_hostname))
+        problem_count += 1
+        return
+    except:
+        logging.warning("PROBLEM: RMT cert exception.")
+        problem_count += 1
+        return
+    logging.info("RMT certs OK.")
+    return
+
+# ----------------------------------------------------------------------------
+def check_https_port(rmt_servers):
     """Check https is open to RMT servers"""
     global problem_count
-    logging.info("Checking https access to RMT servers.")
+    logging.info("Checking https port access to RMT servers.")
     for server in rmt_servers:
         try:
             requests.get('https://' + server + '/api/health/status', verify=False, timeout=5)
@@ -2221,7 +2241,8 @@ def check_realtime(args):
                 check_region_servers(region)
                 rmt_servers = get_rmt_servers(framework, region)
                 check_http(rmt_servers)
-                check_https(rmt_servers)
+                check_https_port(rmt_servers)
+                check_https_cert("smt-" + framework + ".susecloud.net")
             logging.info("")
             time.sleep(args.i)
     except KeyboardInterrupt:
@@ -2487,7 +2508,8 @@ def main(args):
     rmt_servers = get_rmt_servers(framework, region)
     check_current_rmt(framework, rmt_servers)
     check_http(rmt_servers)
-    check_https(rmt_servers)
+    check_https_port(rmt_servers)
+    check_https_cert("smt-" + framework + ".susecloud.net")
     report()
     collect_debug_data(framework, args, False)
 
