@@ -22,7 +22,7 @@ import urllib.request
 from requests.packages import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-VERSION = "1.2.7"
+VERSION = "1.2.8"
 SCRIPT_NAME = "sc-repocheck"
 BASEPRODUCT_FILE = "/etc/products.d/baseproduct"
 pint_data = {}
@@ -33,7 +33,6 @@ problem_count = 0
 # ----------------------------------------------------------------------------
 
 # PINT START
-
 pint_data["azure"] = \
 """
 [
@@ -1016,19 +1015,19 @@ pint_data["azure"] = \
       "type": "smt"
     },
     {
-      "ip": "40.90.192.185",
+      "ip": "20.38.0.87",
       "name": "smt-azure.susecloud.net",
       "region": "westus3",
       "type": "smt"
     },
     {
-      "ip": "52.148.152.22",
+      "ip": "20.38.1.19",
       "name": "smt-azure.susecloud.net",
       "region": "westus3",
       "type": "smt"
     },
     {
-      "ip": "52.156.104.18",
+      "ip": "20.38.0.31",
       "name": "smt-azure.susecloud.net",
       "region": "westus3",
       "type": "smt"
@@ -1999,7 +1998,6 @@ pint_data["gce"] = \
     }
   ]
 """
-
 # PINT END
 
 # ----------------------------------------------------------------------------
@@ -2026,8 +2024,8 @@ def check_baseproduct():
                 os.path.basename(sap_baseproduct)):
                 logging.info("SLES_SAP baseproduct OK.")
                 return 0
-        else:
-            fix_baseproduct(sap_baseproduct)
+            else:
+                fix_baseproduct(sap_baseproduct)
     else:
         if baseproduct_exists:
             if (os.path.basename(os.readlink(BASEPRODUCT_FILE)) == \
