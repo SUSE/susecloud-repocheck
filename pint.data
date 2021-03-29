@@ -981,19 +981,19 @@ pint_data["azure"] = \
       "type": "smt"
     },
     {
-      "ip": "40.90.192.185",
+      "ip": "20.38.0.87",
       "name": "smt-azure.susecloud.net",
       "region": "westus3",
       "type": "smt"
     },
     {
-      "ip": "52.148.152.22",
+      "ip": "20.38.1.19",
       "name": "smt-azure.susecloud.net",
       "region": "westus3",
       "type": "smt"
     },
     {
-      "ip": "52.156.104.18",
+      "ip": "20.38.0.31",
       "name": "smt-azure.susecloud.net",
       "region": "westus3",
       "type": "smt"
