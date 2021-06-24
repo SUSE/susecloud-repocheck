@@ -1675,6 +1675,24 @@ pint_data["gce"] = \
       "type": "smt"
     },
     {
+      "ip": "34.116.224.144",
+      "name": "smt-gce.susecloud.net",
+      "region": "europe-central2",
+      "type": "smt"
+    },
+    {
+      "ip": "34.116.251.218",
+      "name": "smt-gce.susecloud.net",
+      "region": "europe-central2",
+      "type": "smt"
+    },
+    {
+      "ip": "34.118.112.80",
+      "name": "smt-gce.susecloud.net",
+      "region": "europe-central2",
+      "type": "smt"
+    },
+    {
       "ip": "35.228.142.43",
       "name": "smt-gce.susecloud.net",
       "region": "europe-north1",
