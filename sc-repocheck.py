@@ -2696,7 +2696,9 @@ def supported_metadata_version():
         ver = subprocess.check_output(
             ['rpm', '-q', 'python3-azuremetadata', '--queryformat', '%{VERSION}']).decode("utf-8")
     except subprocess.CalledProcessError:
-        ver = 0
+        logging.error("Could not verify the python3-azuremetadata version, Cannot continue")
+        sys.exit()
+
     # metadata version does not meet requirements to us --api latest
     if (ver > required_version) - (ver < required_version) == -1:
         return False
