@@ -2698,7 +2698,7 @@ def supported_metadata_version():
     except subprocess.CalledProcessError:
         ver = 0
     # metadata version does not meet requirements to us --api latest
-    if (ver > required_version) - (ver < required_version) == -1:
+    if (str(ver) > required_version) - (str(ver) < required_version) == -1:
         return False
     else:
         return True
