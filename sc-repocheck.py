@@ -35,7 +35,7 @@ problem_count = 0
 # PINT START
 
 pint_data["azure"] = \
-"""
+    """
 [
     {
       "ip": "51.4.145.155",
@@ -1370,7 +1370,7 @@ pint_data["azure"] = \
   ]
 """
 pint_data["ec2"] = \
-"""
+    """
 [
     {
       "ip": "13.244.54.57",
@@ -1858,7 +1858,7 @@ pint_data["ec2"] = \
   ]
 """
 pint_data["gce"] = \
-"""
+    """
 [
     {
       "ip": "107.167.177.171",
@@ -2866,7 +2866,7 @@ def check_metadata(framework, args):
 
 def check_pkg_versions(framework):
     """Check package version is at a certain level"""
-    required_version = "9.1.3"
+    required_version = "10.0.0"
     global problem_count
     logging.info("Checking package versions.")
 
@@ -2931,7 +2931,8 @@ def check_region_servers(region):
     to_cnt = 0
     se_cnt = 0
     re_cnt = 0
-    cert_dir = "/var/lib/regionService/certs"
+    old_cert_dir = "/var/lib/regionService/certs"
+    new_cert_dir = "/usr/lib/regionService/certs"
     logging.info("Checking regionserver access.")
     content = read_regionserverclnt()
     for entry in content:
@@ -2939,6 +2940,11 @@ def check_region_servers(region):
             break
     entry = entry.rsplit()
     region_servers = entry[2].split(",")
+    # check for location of cert_dir
+    if os.path.exists(old_cert_dir):
+        cert_dir = old_cert_dir
+    else:
+        cert_dir = new_cert_dir
     for region_server in region_servers:
         certfile = cert_dir + '/' + region_server + '.pem'
         try:
