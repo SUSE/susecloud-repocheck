@@ -2876,7 +2876,7 @@ def check_pkg_versions(framework):
     except subprocess.CalledProcessError:
         ver = 0
 
-    if (ver > required_version) - (ver < required_version) == -1:
+    if (str(ver) > required_version) - (str(ver) < required_version) == -1:
         logging.warning(
             "PROBLEM: Update infrastructure packages need to be updated.")
         logging.info("Attempting to upgrade packages.")
