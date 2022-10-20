@@ -2842,9 +2842,9 @@ def check_metadata(framework, args):
             method='PUT')
         try:
             token = urllib.request.urlopen(request).read().decode()
+            request_header = {'X-aws-ec2-metadata-token': token}
         except urllib.error.URLError:
             request_header = {}
-        request_header = {'X-aws-ec2-metadata-token': token}
         try:
             r = requests.get(instance_endpoint,
                              headers=request_header, timeout=5)
