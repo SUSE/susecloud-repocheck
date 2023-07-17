@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """This script will perform an instance repository check and attempt
-   to fix any issues which prevent the instance from registering to 
+   to fix any issues which prevent the instance from registering to
    the SUSE update infrastructure """
 
 import argparse
@@ -2753,10 +2753,10 @@ def check_https_cert(rmt_hostname):
 
     logging.info("Checking https access using RMT certs.")
     certfiles = [filename for filename in os.listdir(
-        '/usr/share/pki/trust/anchors') if filename.startswith("registration_server")]
+        '/etc/pki/trust/anchors') if filename.startswith("registration_server")]
     try:
         requests.get('https://' + rmt_hostname + '/api/health/status',
-                     verify='/usr/share/pki/trust/anchors/'+certfiles[0], timeout=5)
+                     verify='/etc/pki/trust/anchors/'+certfiles[0], timeout=5)
     except requests.exceptions.SSLError:
         logging.warning(
             "PROBLEM: MITM proxy misconfiguration. Proxy cannot intercept RMT certs. Exempt {0}.".format(rmt_hostname))
