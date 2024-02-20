@@ -5,10 +5,10 @@ SUSECloud Update Infrastructure Check for Azure, AWS, GCP PAYG/On-demand Instanc
 
 
 - If you have outbound https opened on the instance, from the instance, run:  
-python3 <(curl -sL https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.py)
+python3 <(curl -sL https://raw.githubusercontent.com/SUSE/susecloud-repocheck/main/sc-repocheck.py)
 
 - Or download and transfer the script to the instance:  
-https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.py<br>
+https://raw.githubusercontent.com/SUSE/susecloud-repocheck/main/sc-repocheck.py<br>
 Then run:  
 python3 sc-repocheck.py
 
@@ -17,7 +17,7 @@ python3 sc-repocheck.py
 This option allows user to see repocheck report in realtime over a specific interval (default:10 seconds).  This will run in a loop until user cancels so this would ideally be used while security rules are modified or appliances configured in realtime.
 
 Download and transfer the script to the instance:  
-https://raw.githubusercontent.com/rfparedes/susecloud-repocheck/main/sc-repocheck.py 
+https://raw.githubusercontent.com/SUSE/susecloud-repocheck/main/sc-repocheck.py
 
 Then run:  
 python3 sc-repocheck.py -r -i \<INTERVAL><br>
