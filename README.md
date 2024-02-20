@@ -1,28 +1,45 @@
 # susecloud-repocheck
-SUSECloud Update Infrastructure Check for Azure, AWS, GCP PAYG/On-demand Instances
 
-## To autofix, report, and collect debugdata
+SUSE Public Cloud Update Infrastructure check tool for PAYG On-demand SLES based resources on AWS, Azure or GCP.
 
+## To automatically check, fix, report and collect debug data
 
-- If you have outbound https opened on the instance, from the instance, run:  
+If the host is able to make outbound HTTPS request to the public internet, from the host, run the following command:
+
+```bash
 python3 <(curl -sL https://raw.githubusercontent.com/SUSE/susecloud-repocheck/main/sc-repocheck.py)
+```
 
-- Or download and transfer the script to the instance:  
-https://raw.githubusercontent.com/SUSE/susecloud-repocheck/main/sc-repocheck.py<br>
-Then run:  
+OR download the script seperately and transfer it to the host:
+
+```
+curl -sL 'https://raw.githubusercontent.com/SUSE/susecloud-repocheck/main/sc-repocheck.py' -O
+```
+
+After transferring the script to the host, run the following command:
+
+```
 python3 sc-repocheck.py
+```
 
-## To report realtime status while troubleshooting (e.g. while proxy administration is dynamically fixing configuration)
+## Reporting of realtime status (e.g. during live troubleshooting)
 
-This option allows user to see repocheck report in realtime over a specific interval (default:10 seconds).  This will run in a loop until user cancels so this would ideally be used while security rules are modified or appliances configured in realtime.
+This option allows user to see repocheck report in realtime over a specific interval (default:10 seconds). This will run in a loop until user cancels, which can be used while the admin of a proxy is making adjustments to the proxy configuration, modifying security related rules or making other changes to security appliance(s) within the environment.
 
-Download and transfer the script to the instance:  
-https://raw.githubusercontent.com/SUSE/susecloud-repocheck/main/sc-repocheck.py
+Download the script to the instance or locally and then transfer the script to the host:
 
-Then run:  
-python3 sc-repocheck.py -r -i \<INTERVAL><br>
-e.g. to check every 30 seconds: python3 sc-repocheck.py -r -i 30 
-  
- 
+```bash
+curl -sL 'https://raw.githubusercontent.com/SUSE/susecloud-repocheck/main/sc-repocheck.py' -O
+```
 
+Then run:
 
+```bash
+python3 sc-repocheck.py -r -i <interval>
+```
+
+For example, to check every 30 seconds:
+
+```bash
+python3 sc-repocheck.py -r -i 30
+```
