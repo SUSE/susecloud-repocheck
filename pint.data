@@ -1331,6 +1331,90 @@ pint_data["azure"] = \
       "name": "smt-azure.susecloud.net",
       "region": "swedensouth",
       "type": "smt"
+    },
+    {
+      "ip": "20.21.144.114",
+      "ipv6": "",
+      "name": "smt-azure.susecloud.net",
+      "region": "qatarcentral",
+      "type": "smt"
+    },
+    {
+      "ip": "20.173.88.125",
+      "ipv6": "",
+      "name": "smt-azure.susecloud.net",
+      "region": "qatarcentral",
+      "type": "smt"
+    },
+    {
+      "ip": "20.173.48.160",
+      "ipv6": "",
+      "name": "smt-azure.susecloud.net",
+      "region": "qatarcentral",
+      "type": "smt"
+    },
+    {
+      "ip": "4.232.137.66",
+      "ipv6": "",
+      "name": "smt-azure.susecloud.net",
+      "region": "italynorth",
+      "type": "smt"
+    },
+    {
+      "ip": "4.232.160.39",
+      "ipv6": "",
+      "name": "smt-azure.susecloud.net",
+      "region": "italynorth",
+      "type": "smt"
+    },
+    {
+      "ip": "4.232.64.66",
+      "ipv6": "",
+      "name": "smt-azure.susecloud.net",
+      "region": "italynorth",
+      "type": "smt"
+    },
+    {
+      "ip": "20.217.65.7",
+      "ipv6": "",
+      "name": "smt-azure.susecloud.net",
+      "region": "israelcentral",
+      "type": "smt"
+    },
+    {
+      "ip": "20.217.81.4",
+      "ipv6": "",
+      "name": "smt-azure.susecloud.net",
+      "region": "israelcentral",
+      "type": "smt"
+    },
+    {
+      "ip": "20.217.16.207",
+      "ipv6": "",
+      "name": "smt-azure.susecloud.net",
+      "region": "israelcentral",
+      "type": "smt"
+    },
+    {
+      "ip": "20.215.232.221",
+      "ipv6": "",
+      "name": "smt-azure.susecloud.net",
+      "region": "polandcentral",
+      "type": "smt"
+    },
+    {
+      "ip": "20.215.41.131",
+      "ipv6": "",
+      "name": "smt-azure.susecloud.net",
+      "region": "polandcentral",
+      "type": "smt"
+    },
+    {
+      "ip": "20.215.200.244",
+      "ipv6": "",
+      "name": "smt-azure.susecloud.net",
+      "region": "polandcentral",
+      "type": "smt"
     }
   ]
 """
@@ -1818,6 +1902,174 @@ pint_data["ec2"] = \
       "ipv6": "",
       "name": "smt-ec2.susecloud.net",
       "region": "ap-southeast-3",
+      "type": "smt"
+    },
+    {
+      "ip": "3.28.92.224",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "me-central-1",
+      "type": "smt"
+    },
+    {
+      "ip": "3.28.180.109",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "me-central-1",
+      "type": "smt"
+    },
+    {
+      "ip": "3.28.77.239",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "me-central-1",
+      "type": "smt"
+    },
+    {
+      "ip": "13.208.100.56",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "ap-northeast-3",
+      "type": "smt"
+    },
+    {
+      "ip": "13.208.114.212",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "ap-northeast-3",
+      "type": "smt"
+    },
+    {
+      "ip": "13.208.123.116",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "ap-northeast-3",
+      "type": "smt"
+    },
+    {
+      "ip": "18.100.37.213",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "eu-south-2",
+      "type": "smt"
+    },
+    {
+      "ip": "18.100.159.27",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "eu-south-2",
+      "type": "smt"
+    },
+    {
+      "ip": "18.100.23.175",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "eu-south-2",
+      "type": "smt"
+    },
+    {
+      "ip": "16.62.74.77",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "eu-central-2",
+      "type": "smt"
+    },
+    {
+      "ip": "16.62.124.203",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "eu-central-2",
+      "type": "smt"
+    },
+    {
+      "ip": "16.62.74.195",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "eu-central-2",
+      "type": "smt"
+    },
+    {
+      "ip": "18.60.21.99",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "ap-south-2",
+      "type": "smt"
+    },
+    {
+      "ip": "18.60.82.174",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "ap-south-2",
+      "type": "smt"
+    },
+    {
+      "ip": "18.60.96.230",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "ap-south-2",
+      "type": "smt"
+    },
+    {
+      "ip": "16.50.164.59",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "ap-southeast-4",
+      "type": "smt"
+    },
+    {
+      "ip": "16.50.9.143",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "ap-southeast-4",
+      "type": "smt"
+    },
+    {
+      "ip": "16.50.164.80",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "ap-southeast-4",
+      "type": "smt"
+    },
+    {
+      "ip": "51.16.120.190",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "il-central-1",
+      "type": "smt"
+    },
+    {
+      "ip": "51.16.134.117",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "il-central-1",
+      "type": "smt"
+    },
+    {
+      "ip": "51.16.123.189",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "il-central-1",
+      "type": "smt"
+    },
+    {
+      "ip": "40.176.165.49",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "ca-west-1",
+      "type": "smt"
+    },
+    {
+      "ip": "40.176.164.231",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "ca-west-1",
+      "type": "smt"
+    },
+    {
+      "ip": "40.176.178.85",
+      "ipv6": "",
+      "name": "smt-ec2.susecloud.net",
+      "region": "ca-west-1",
       "type": "smt"
     }
   ]
@@ -2579,6 +2831,132 @@ pint_data["gce"] = \
       "ipv6": "",
       "name": "smt-gce.susecloud.net",
       "region": "us-south1",
+      "type": "smt"
+    },
+    {
+      "ip": "34.165.180.184",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "me-west1",
+      "type": "smt"
+    },
+    {
+      "ip": "34.165.176.80",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "me-west1",
+      "type": "smt"
+    },
+    {
+      "ip": "34.165.96.4",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "me-west1",
+      "type": "smt"
+    },
+    {
+      "ip": "34.17.41.192",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "europe-west12",
+      "type": "smt"
+    },
+    {
+      "ip": "34.17.39.199",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "europe-west12",
+      "type": "smt"
+    },
+    {
+      "ip": "34.17.26.77",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "europe-west12",
+      "type": "smt"
+    },
+    {
+      "ip": "34.18.39.136",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "me-central1",
+      "type": "smt"
+    },
+    {
+      "ip": "34.18.23.194",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "me-central1",
+      "type": "smt"
+    },
+    {
+      "ip": "34.18.28.146",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "me-central1",
+      "type": "smt"
+    },
+    {
+      "ip": "34.32.29.185",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "europe-west10",
+      "type": "smt"
+    },
+    {
+      "ip": "34.32.20.208",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "europe-west10",
+      "type": "smt"
+    },
+    {
+      "ip": "34.32.23.128",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "europe-west10",
+      "type": "smt"
+    },
+    {
+      "ip": "34.35.33.200",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "africa-south1",
+      "type": "smt"
+    },
+    {
+      "ip": "34.35.13.140",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "africa-south1",
+      "type": "smt"
+    },
+    {
+      "ip": "34.35.20.131",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "africa-south1",
+      "type": "smt"
+    },
+    {
+      "ip": "34.166.27.76",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "me-central2",
+      "type": "smt"
+    },
+    {
+      "ip": "34.166.35.132",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "me-central2",
+      "type": "smt"
+    },
+    {
+      "ip": "34.166.58.82",
+      "ipv6": "",
+      "name": "smt-gce.susecloud.net",
+      "region": "me-central2",
       "type": "smt"
     }
   ]
