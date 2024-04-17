@@ -22,7 +22,7 @@ import urllib.request
 from requests.packages import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-VERSION = "1.3.0"
+VERSION = "1.3.1"
 SCRIPT_NAME = "sc-repocheck"
 BASEPRODUCT_FILE = "/etc/products.d/baseproduct"
 pint_data = {}
@@ -3619,7 +3619,7 @@ def mycmp(version1, version2):
 
 def print_footer():
     logging.info(
-        "Report bugs to https://github.com/rfparedes/susecloud-repocheck/issues")
+        "Report bugs to https://github.com/SUSE/susecloud-repocheck/issues")
 
 # ----------------------------------------------------------------------------
 
