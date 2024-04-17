@@ -3201,6 +3201,7 @@ def get_os_version():
 
 def get_rmt_servers(framework, region):
     """Get RMT servers for region in particular framework."""
+    region = region.lower()
     rmt_servers = []
     rmt_dict = (json.loads(pint_data[framework]))
     for server in rmt_dict:
