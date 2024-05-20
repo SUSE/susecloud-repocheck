@@ -20,6 +20,7 @@ import time
 import urllib.error
 import urllib.request
 from requests.packages import urllib3
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 VERSION = "1.3.1"
@@ -33,8 +34,9 @@ problem_count = 0
 # ----------------------------------------------------------------------------
 
 # PINT START
-pint_data["azure"] = \
-"""
+pint_data[
+    "azure"
+] = """
 [
     {
       "ip": "51.4.145.155",
@@ -1452,8 +1454,9 @@ pint_data["azure"] = \
     }
   ]
 """
-pint_data["ec2"] = \
-"""
+pint_data[
+    "ec2"
+] = """
 [
     {
       "ip": "13.244.54.57",
@@ -2108,8 +2111,9 @@ pint_data["ec2"] = \
     }
   ]
 """
-pint_data["gce"] = \
-"""
+pint_data[
+    "gce"
+] = """
 [
     {
       "ip": "107.167.177.171",
@@ -3010,8 +3014,7 @@ def check_baseproduct():
     logging.info("Checking baseproduct.")
 
     if not os.path.exists(sap_baseproduct) and not os.path.exists(sles_baseproduct):
-        logging.error(
-            "No SLES_SAP or SLES baseproduct exists. Cannot continue.")
+        logging.error("No SLES_SAP or SLES baseproduct exists. Cannot continue.")
         sys.exit()
 
     if not os.path.exists(BASEPRODUCT_FILE):
@@ -3020,20 +3023,23 @@ def check_baseproduct():
     # baseproduct matches SLES_SAP.prod
     if os.path.exists(sap_baseproduct):
         if baseproduct_exists:
-            if (os.path.basename(os.readlink(BASEPRODUCT_FILE)) ==
-                    os.path.basename(sap_baseproduct)):
+            if os.path.basename(os.readlink(BASEPRODUCT_FILE)) == os.path.basename(
+                sap_baseproduct
+            ):
                 logging.info("SLES_SAP baseproduct OK.")
                 return 0
             else:
                 fix_baseproduct(sap_baseproduct)
     else:
         if baseproduct_exists:
-            if (os.path.basename(os.readlink(BASEPRODUCT_FILE)) ==
-                    os.path.basename(sles_baseproduct)):
+            if os.path.basename(os.readlink(BASEPRODUCT_FILE)) == os.path.basename(
+                sles_baseproduct
+            ):
                 logging.info("SLES baseproduct OK.")
                 return 0
             else:
                 fix_baseproduct(sles_baseproduct)
+
 
 # ----------------------------------------------------------------------------
 
@@ -3041,7 +3047,7 @@ def check_baseproduct():
 def check_current_rmt(framework, rmt_servers):
     global problem_count
     """Check if current smt server in /etc/hosts is region correct"""
-    domain_name = ("smt-" + framework + ".susecloud.net")
+    domain_name = "smt-" + framework + ".susecloud.net"
     logging.info("Checking RMT server entry is for correct region.")
 
     try:
@@ -3055,6 +3061,7 @@ def check_current_rmt(framework, rmt_servers):
             problem_count += 1
             check_hosts(framework, True)
 
+
 # ----------------------------------------------------------------------------
 
 
@@ -3062,14 +3069,14 @@ def check_hosts(framework, delete_record):
     """If there are multiple SMT entries in /etc/hosts, there can be update
     issues. Check /etc/hosts file for problems and fix if there are."""
     etc_hosts = "/etc/hosts"
-    domain_name = ("smt-" + framework + ".susecloud.net")
+    domain_name = "smt-" + framework + ".susecloud.net"
 
     new_hosts_content = []
     if delete_record == False:
         logging.info("Checking {0} for multiple records.".format(etc_hosts))
 
     try:
-        with open(etc_hosts, 'r') as hosts_file:
+        with open(etc_hosts, "r") as hosts_file:
             content = hosts_file.readlines()
         # Initialize variable to count number of smt records in hosts file
         entry_count = 0
@@ -3082,7 +3089,7 @@ def check_hosts(framework, delete_record):
             if domain_name in entry:
                 entry_count += 1
                 continue
-            if '# Added by SMT' in entry:
+            if "# Added by SMT" in entry:
                 continue
             new_hosts_content.append(entry)
 
@@ -3092,10 +3099,12 @@ def check_hosts(framework, delete_record):
             logging.info("%s OK." % etc_hosts)
         elif entry_count >= 2 or delete_record == True:
             logging.warning(
-                "PROBLEM: Multiple or incorrect rmt records exist, deleting.")
-            with open(etc_hosts, 'w') as hosts_file:
+                "PROBLEM: Multiple or incorrect rmt records exist, deleting."
+            )
+            with open(etc_hosts, "w") as hosts_file:
                 for entry in new_hosts_content:
                     hosts_file.write(entry)
+
 
 # ----------------------------------------------------------------------------
 
@@ -3106,20 +3115,20 @@ def check_http(rmt_servers):
     logging.info("Checking http port access to RMT servers.")
     content = read_regionserverclnt()
     for entry in content:
-        if 'httpsOnly = true' in entry:
+        if "httpsOnly = true" in entry:
             logging.info("http check unnecessary.")
             return
     for server in rmt_servers:
         try:
-            requests.get('http://' + server + '/rmt.crt', timeout=5)
+            requests.get("http://" + server + "/rmt.crt", timeout=5)
         except:
-            logging.warning(
-                "PROBLEM: http access issue. Open port 80 to RMT servers:")
+            logging.warning("PROBLEM: http access issue. Open port 80 to RMT servers:")
             logging.warning(rmt_servers)
             problem_count += 1
             return
     logging.info("http access OK.")
     return
+
 
 # ----------------------------------------------------------------------------
 
@@ -3129,14 +3138,23 @@ def check_https_cert(rmt_hostname):
     global problem_count
 
     logging.info("Checking https access using RMT certs.")
-    certfiles = [filename for filename in os.listdir(
-        '/etc/pki/trust/anchors') if filename.startswith("registration_server")]
+    certfiles = [
+        filename
+        for filename in os.listdir("/etc/pki/trust/anchors")
+        if filename.startswith("registration_server")
+    ]
     try:
-        requests.get('https://' + rmt_hostname + '/api/health/status',
-                     verify='/etc/pki/trust/anchors/'+certfiles[0], timeout=5)
+        requests.get(
+            "https://" + rmt_hostname + "/api/health/status",
+            verify="/etc/pki/trust/anchors/" + certfiles[0],
+            timeout=5,
+        )
     except requests.exceptions.SSLError:
         logging.warning(
-            "PROBLEM: MITM proxy misconfiguration. Proxy cannot intercept RMT certs. Exempt {0}.".format(rmt_hostname))
+            "PROBLEM: MITM proxy misconfiguration. Proxy cannot intercept RMT certs. Exempt {0}.".format(
+                rmt_hostname
+            )
+        )
         problem_count += 1
         return
     except Exception as ex:
@@ -3147,6 +3165,7 @@ def check_https_cert(rmt_hostname):
     logging.info("RMT certs OK.")
     return
 
+
 # ----------------------------------------------------------------------------
 
 
@@ -3156,16 +3175,19 @@ def check_https_port(rmt_servers):
     logging.info("Checking https port access to RMT servers.")
     for server in rmt_servers:
         try:
-            requests.get('https://' + server +
-                         '/api/health/status', verify=False, timeout=5)
+            requests.get(
+                "https://" + server + "/api/health/status", verify=False, timeout=5
+            )
         except:
             logging.warning(
-                "PROBLEM: https access issue. Open port 443 to RMT servers:")
+                "PROBLEM: https access issue. Open port 443 to RMT servers:"
+            )
             logging.warning(rmt_servers)
             problem_count += 1
             return
     logging.info("https access OK.")
     return
+
 
 # ----------------------------------------------------------------------------
 
@@ -3177,15 +3199,19 @@ def check_metadata(framework, args):
     logging.info("Checking metadata access.")
     if framework == "azure":
         instance_api_version = "2019-03-11"
-        instance_endpoint = metadata_base_url + \
-            "/metadata/instance/compute/location?api-version=" + \
-            instance_api_version + "&format=text"
-        headers = {'Metadata': 'True'}
+        instance_endpoint = (
+            metadata_base_url
+            + "/metadata/instance/compute/location?api-version="
+            + instance_api_version
+            + "&format=text"
+        )
+        headers = {"Metadata": "True"}
         try:
             r = requests.get(instance_endpoint, headers=headers, timeout=5)
         except:
             logging.warning(
-                "PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254.")
+                "PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254."
+            )
             if args.r:
                 return None
             collect_debug_data(framework, args, True)
@@ -3195,39 +3221,41 @@ def check_metadata(framework, args):
 
     elif framework == "gce":
         instance_endpoint = metadata_base_url + "/computeMetadata/v1/instance/zone"
-        headers = {'Metadata-Flavor': 'Google'}
+        headers = {"Metadata-Flavor": "Google"}
         try:
             r = requests.get(instance_endpoint, headers=headers, timeout=5)
         except:
             logging.warning(
-                "PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254.")
+                "PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254."
+            )
             if args.r:
                 return None
             collect_debug_data(framework, args, True)
             sys.exit()
         else:
-            location = r.text.split('/')[3]
-            location = location.split('-', 2)
+            location = r.text.split("/")[3]
+            location = location.split("-", 2)
             location = location[0] + "-" + location[1]
 
     elif framework == "ec2":
         instance_api_version = "2008-02-01"
         instance_endpoint = metadata_base_url + "/latest/meta-data/placement/region"
         request = urllib.request.Request(
-            'http://169.254.169.254/latest/api/token',
-            headers={'X-aws-ec2-metadata-token-ttl-seconds': '21600'},
-            method='PUT')
+            "http://169.254.169.254/latest/api/token",
+            headers={"X-aws-ec2-metadata-token-ttl-seconds": "21600"},
+            method="PUT",
+        )
         try:
             token = urllib.request.urlopen(request).read().decode()
-            request_header = {'X-aws-ec2-metadata-token': token}
+            request_header = {"X-aws-ec2-metadata-token": token}
         except urllib.error.URLError:
             request_header = {}
         try:
-            r = requests.get(instance_endpoint,
-                             headers=request_header, timeout=5)
+            r = requests.get(instance_endpoint, headers=request_header, timeout=5)
         except:
             logging.warning(
-                "PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254.")
+                "PROBLEM: Metadata is not accessible. Fix access to metadata at 169.254.169.254."
+            )
             if args.r:
                 return None
             collect_debug_data(framework, args, True)
@@ -3237,6 +3265,7 @@ def check_metadata(framework, args):
 
     logging.info("Metadata OK.")
     return location
+
 
 # ----------------------------------------------------------------------------
 
@@ -3249,31 +3278,34 @@ def check_pkg_versions(framework):
 
     try:
         ver = subprocess.check_output(
-            ['rpm', '-q', 'cloud-regionsrv-client', '--queryformat', '%{VERSION}']).decode("utf-8")
+            ["rpm", "-q", "cloud-regionsrv-client", "--queryformat", "%{VERSION}"]
+        ).decode("utf-8")
     except subprocess.CalledProcessError:
         ver = 0
 
     if (str(ver) > required_version) - (str(ver) < required_version) == -1:
-        logging.warning(
-            "PROBLEM: Update infrastructure packages need to be updated.")
+        logging.warning("PROBLEM: Update infrastructure packages need to be updated.")
         logging.info("Attempting to upgrade packages.")
         ret = upgrade_packages(framework)
 
         if ret == 1:
             logging.warning(
-                "PROBLEM: Update infrastructure packages need to be updated manually.")
+                "PROBLEM: Update infrastructure packages need to be updated manually."
+            )
             logging.warning(
-                "Follow Situation 4 at https://www.suse.com/support/kb/doc/?id=000019633")
+                "Follow Situation 4 at https://www.suse.com/support/kb/doc/?id=000019633"
+            )
             logging.warning("Cannot continue. Exiting.")
             sys.exit()
     logging.info("Package versions OK.")
+
 
 # ----------------------------------------------------------------------------
 
 
 def check_realtime(args):
     """Check access in real-time for troubleshooting with proxy administrators"""
-    if (args.i == None):
+    if args.i == None:
         args.i = 10
     print_header()
     logging.info("Check interval is {0} seconds".format(args.i))
@@ -3299,6 +3331,7 @@ def check_realtime(args):
         logging.info("Exiting real-time.")
         sys.exit()
 
+
 # ----------------------------------------------------------------------------
 
 
@@ -3323,25 +3356,31 @@ def check_region_servers(region):
     else:
         cert_dir = new_cert_dir
     for region_server in region_servers:
-        certfile = cert_dir + '/' + region_server + '.pem'
+        certfile = cert_dir + "/" + region_server + ".pem"
         try:
-            requests.get('https://' + region_server +
-                         '/regionInfo?regionHint=' + region, verify=certfile, timeout=5)
+            requests.get(
+                "https://" + region_server + "/regionInfo?regionHint=" + region,
+                verify=certfile,
+                timeout=5,
+            )
         except requests.exceptions.Timeout:
             to_cnt += 1
         except requests.exceptions.SSLError:
             se_cnt += 1
         except requests.exceptions.RequestException:
             re_cnt += 1
-    regsrv_cnt = (len(region_servers))
+    regsrv_cnt = len(region_servers)
     if to_cnt == regsrv_cnt:
         logging.warning(
-            "PROBLEM: No access to a region server. Open port 443 to a region server:")
+            "PROBLEM: No access to a region server. Open port 443 to a region server:"
+        )
         logging.warning("Region Server IPs: {0}".format(region_servers))
         problem_count += 1
     if se_cnt == regsrv_cnt:
         logging.warning(
-            "PROBLEM: MITM proxy misconfiguration. Proxy cannot intercept certs in %s. Exempt at least one region server.", cert_dir)
+            "PROBLEM: MITM proxy misconfiguration. Proxy cannot intercept certs in %s. Exempt at least one region server.",
+            cert_dir,
+        )
         logging.warning("Region Server IPs: {0}".format(region_servers))
         problem_count += 1
     if re_cnt == regsrv_cnt:
@@ -3352,23 +3391,24 @@ def check_region_servers(region):
         logging.info("Region server access OK.")
     return
 
+
 # ----------------------------------------------------------------------------
 
 
 def collect_debug_data(framework, disable_tcpdump, disable_metadata_collect):
     var_location = "/var/log/"
-    domain_name = ("smt-" + framework + ".susecloud.net")
+    domain_name = "smt-" + framework + ".susecloud.net"
     suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
     filename = "_".join([SCRIPT_NAME, suffix])
     tmp_dir = "/tmp/" + filename
     tarball_name = os.path.join(var_location, filename + ".tar.xz")
     logging.info(
-        "Collecting debug data. Please wait 1-2 minutes maybe longer, depending on machine type.")
+        "Collecting debug data. Please wait 1-2 minutes maybe longer, depending on machine type."
+    )
     try:
         os.mkdir(tmp_dir)
     except OSError:
-        logging.error(
-            "Cannot make {0}. Not collecting debug data.".format(tmp_dir))
+        logging.error("Cannot make {0}. Not collecting debug data.".format(tmp_dir))
         return
 
     if disable_metadata_collect == False:
@@ -3376,23 +3416,29 @@ def collect_debug_data(framework, disable_tcpdump, disable_metadata_collect):
         try:
             if framework == "azure":
                 if supported_metadata_version == True:
-                    with open(os.path.join(tmp_dir, "azuremetadata.latest"), "wb") as file:
-                        file.write(subprocess.check_output(
-                            ['azuremetadata', '--api', 'latest']))
+                    with open(
+                        os.path.join(tmp_dir, "azuremetadata.latest"), "wb"
+                    ) as file:
+                        file.write(
+                            subprocess.check_output(
+                                ["azuremetadata", "--api", "latest"]
+                            )
+                        )
 
                 with open(os.path.join(tmp_dir, "azuremetadata.default"), "wb") as file:
-                    file.write(subprocess.check_output(['azuremetadata']))
+                    file.write(subprocess.check_output(["azuremetadata"]))
 
             elif framework == "ec2":
                 with open(os.path.join(tmp_dir, "ec2metadata.latest"), "wb") as file:
-                    file.write(subprocess.check_output(
-                        ['ec2metadata', '--api', 'latest']))
+                    file.write(
+                        subprocess.check_output(["ec2metadata", "--api", "latest"])
+                    )
                 with open(os.path.join(tmp_dir, "ec2metadata.default"), "wb") as file:
-                    file.write(subprocess.check_output(['ec2metadata']))
+                    file.write(subprocess.check_output(["ec2metadata"]))
 
             elif framework == "gce":
                 with open(os.path.join(tmp_dir, "gcemetadata.default"), "wb") as file:
-                    file.write(subprocess.check_output(['gcemetadata']))
+                    file.write(subprocess.check_output(["gcemetadata"]))
 
             cmd = get_dataprovider()
             with open(os.path.join(tmp_dir, "metadata.dataprovider"), "wb") as file:
@@ -3400,29 +3446,35 @@ def collect_debug_data(framework, disable_tcpdump, disable_metadata_collect):
         except:
             if framework == "azure":
                 logging.error(
-                    "PROBLEM: Issue with azuremetadata output. Check metadata access.")
+                    "PROBLEM: Issue with azuremetadata output. Check metadata access."
+                )
             elif framework == "ec2":
                 logging.error(
-                    "PROBLEM: Issue with ec2metadata output. Check metadata access.")
+                    "PROBLEM: Issue with ec2metadata output. Check metadata access."
+                )
             elif framework == "gce":
                 logging.error(
-                    "PROBLEM: Issue with gcemetadata output. Check metadata access.")
+                    "PROBLEM: Issue with gcemetadata output. Check metadata access."
+                )
 
     shutil.copy("/var/log/sc-repocheck", tmp_dir)
 
     with open(os.path.join(tmp_dir, "baseproduct"), "wb") as file:
-        file.write(subprocess.check_output(
-            ['/bin/ls', '-lA', '--time-style=long-iso', '/etc/products.d/']))
+        file.write(
+            subprocess.check_output(
+                ["/bin/ls", "-lA", "--time-style=long-iso", "/etc/products.d/"]
+            )
+        )
 
     try:
         with open(os.path.join(tmp_dir, "zypper-lr-before"), "wb") as file:
-            file.write(subprocess.check_output(['zypper', 'lr']))
+            file.write(subprocess.check_output(["zypper", "lr"]))
     except subprocess.CalledProcessError:
         pass
 
     try:
         with open(os.path.join(tmp_dir, "zypper-ls-before"), "wb") as file:
-            file.write(subprocess.check_output(['zypper', 'ls']))
+            file.write(subprocess.check_output(["zypper", "ls"]))
     except subprocess.CalledProcessError:
         pass
 
@@ -3432,26 +3484,66 @@ def collect_debug_data(framework, disable_tcpdump, disable_metadata_collect):
     os.rename(orig_file, new_file)
 
     curl_out_filename = os.path.join(tmp_dir, "rmt-curl-https.trace")
-    url = 'https://' + domain_name + '/api/health/status'
+    url = "https://" + domain_name + "/api/health/status"
     try:
-        subprocess.check_output(['curl', '-s', '--connect-timeout', '5', '--trace-ascii',
-                                curl_out_filename, '--digest', '--remote-time', '--fail', url])
+        subprocess.check_output(
+            [
+                "curl",
+                "-s",
+                "--connect-timeout",
+                "5",
+                "--trace-ascii",
+                curl_out_filename,
+                "--digest",
+                "--remote-time",
+                "--fail",
+                url,
+            ]
+        )
     except:
         pass
 
     if args.t == False:
         tcpdump_file = os.path.join(tmp_dir, "registercloudguest.pcap")
-        p = subprocess.Popen(['tcpdump', '-s0', '-C', '100', '-W', '1', '-w', tcpdump_file,
-                             'tcp', 'port', '443', 'or', 'tcp', 'port', '80'], stderr=subprocess.DEVNULL)
+        p = subprocess.Popen(
+            [
+                "tcpdump",
+                "-s0",
+                "-C",
+                "100",
+                "-W",
+                "1",
+                "-w",
+                tcpdump_file,
+                "tcp",
+                "port",
+                "443",
+                "or",
+                "tcp",
+                "port",
+                "80",
+            ],
+            stderr=subprocess.DEVNULL,
+        )
 
     strace_file = os.path.join(tmp_dir, "strace.out")
 
     try:
-        subprocess.call(['strace', '-f', '-s512', '-o', strace_file,
-                        '/usr/sbin/registercloudguest', '--force-new'])
+        subprocess.call(
+            [
+                "strace",
+                "-f",
+                "-s512",
+                "-o",
+                strace_file,
+                "/usr/sbin/registercloudguest",
+                "--force-new",
+            ]
+        )
     except:
         logging.error(
-            "PROBLEM: Cannot run registercloudguest. There are unknown issues. Please provide debug data.")
+            "PROBLEM: Cannot run registercloudguest. There are unknown issues. Please provide debug data."
+        )
 
     if args.t == False:
         p.send_signal(subprocess.signal.SIGTERM)
@@ -3460,13 +3552,13 @@ def collect_debug_data(framework, disable_tcpdump, disable_metadata_collect):
 
     with open(os.path.join(tmp_dir, "zypper-lr-after"), "wb") as file:
         try:
-            file.write(subprocess.check_output(['zypper', 'lr']))
+            file.write(subprocess.check_output(["zypper", "lr"]))
         except:
             pass
 
     with open(os.path.join(tmp_dir, "zypper-ls-after"), "wb") as file:
         try:
-            file.write(subprocess.check_output(['zypper', 'ls']))
+            file.write(subprocess.check_output(["zypper", "ls"]))
         except:
             pass
 
@@ -3477,23 +3569,35 @@ def collect_debug_data(framework, disable_tcpdump, disable_metadata_collect):
 
     shutil.copy("/etc/regionserverclnt.cfg", tmp_dir)
 
-    rpms = subprocess.check_output(
-        ['rpm', '-qa', '*region*', '*metadata']).decode("utf-8")
+    rpms = subprocess.check_output(["rpm", "-qa", "*region*", "*metadata"]).decode(
+        "utf-8"
+    )
     rpms = rpms.split()
 
     with open(os.path.join(tmp_dir, "rpms.verify"), "ab") as file:
         for package in rpms:
-            p = subprocess.Popen(['rpm', '-q', package], stderr=subprocess.PIPE,
-                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE, bufsize=-1)
-            p2 = subprocess.Popen(['rpm', '-Vv', package], stderr=subprocess.PIPE,
-                                  stdin=subprocess.PIPE, stdout=subprocess.PIPE, bufsize=-1)
+            p = subprocess.Popen(
+                ["rpm", "-q", package],
+                stderr=subprocess.PIPE,
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                bufsize=-1,
+            )
+            p2 = subprocess.Popen(
+                ["rpm", "-Vv", package],
+                stderr=subprocess.PIPE,
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                bufsize=-1,
+            )
             output, _ = p.communicate()
             output2, _ = p2.communicate()
             file.write(output)
             file.write(output2)
 
-    p = subprocess.Popen(['tar', 'J', '-C', '/tmp/', '-cf',
-                         tarball_name, filename], subprocess.PIPE)
+    p = subprocess.Popen(
+        ["tar", "J", "-C", "/tmp/", "-cf", tarball_name, filename], subprocess.PIPE
+    )
     p.communicate()
     logging.info("Check repositories. An attempt was made to fix.")
     logging.info("Debug data location: {0}".format(tarball_name))
@@ -3503,6 +3607,7 @@ def collect_debug_data(framework, disable_tcpdump, disable_metadata_collect):
         logging.error("Cannot delete {0}. Delete manually.".format(tmp_dir))
 
     print_footer()
+
 
 # ----------------------------------------------------------------------------
 
@@ -3521,6 +3626,7 @@ def fix_baseproduct(baseproduct):
     if check_baseproduct() == 0:
         logging.info("Baseproduct issue confirmed FIXED.")
 
+
 # ----------------------------------------------------------------------------
 
 
@@ -3534,12 +3640,13 @@ def get_dataprovider():
     data_provider = data_provider.split("= ", 1)[1]
     return data_provider
 
+
 # ----------------------------------------------------------------------------
 
 
 def get_framework():
     """Check which public cloud framework script is running in"""
-    cmd = ['dmidecode']
+    cmd = ["dmidecode"]
     try:
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     except subprocess.CalledProcessError as e:
@@ -3561,6 +3668,7 @@ def get_framework():
         sys.exit()
     return framework
 
+
 # ----------------------------------------------------------------------------
 
 
@@ -3568,10 +3676,17 @@ def get_os_version():
     """Return OS version"""
     try:
         p = subprocess.check_output(
-            """sh -c '. /etc/os-release; echo "$VERSION"'""", shell=True, universal_newlines=True).strip()
+            """sh -c '. /etc/os-release; echo "$VERSION"'""",
+            shell=True,
+            universal_newlines=True,
+        ).strip()
         return p.split("-")[0]
     except subprocess.CalledProcessError as e:
-        print('Cannot get OS version. Make sure /etc/os-release has VERSION="<INSTALLED_OS>" line:', e)
+        print(
+            'Cannot get OS version. Make sure /etc/os-release has VERSION="<INSTALLED_OS>" line:',
+            e,
+        )
+
 
 # ----------------------------------------------------------------------------
 
@@ -3580,11 +3695,12 @@ def get_rmt_servers(framework, region):
     """Get RMT servers for region in particular framework."""
     region = region.lower()
     rmt_servers = []
-    rmt_dict = (json.loads(pint_data[framework]))
+    rmt_dict = json.loads(pint_data[framework])
     for server in rmt_dict:
-        if server['region'] == region:
-            rmt_servers.append(server['ip'])
+        if server["region"] == region:
+            rmt_servers.append(server["ip"])
     return rmt_servers
+
 
 # ----------------------------------------------------------------------------
 
@@ -3605,21 +3721,27 @@ def main(args):
     report()
     collect_debug_data(framework, args, False)
 
+
 # ----------------------------------------------------------------------------
 
 
 def mycmp(version1, version2):
     """To compare version numbers"""
+
     def normalize(v):
-        return [int(x) for x in re.sub(r'(\.0+)*$', '', v).split(".")]
-    return (normalize(version1) > normalize(version2)) - (normalize(version1) < normalize(version2))
+        return [int(x) for x in re.sub(r"(\.0+)*$", "", v).split(".")]
+
+    return (normalize(version1) > normalize(version2)) - (
+        normalize(version1) < normalize(version2)
+    )
+
 
 # ----------------------------------------------------------------------------
 
 
 def print_footer():
-    logging.info(
-        "Report bugs to https://github.com/SUSE/susecloud-repocheck/issues")
+    logging.info("Report bugs to https://github.com/SUSE/susecloud-repocheck/issues")
+
 
 # ----------------------------------------------------------------------------
 
@@ -3627,19 +3749,22 @@ def print_footer():
 def print_header():
     logging.info("~~ %s %s ~~" % (SCRIPT_NAME, VERSION))
 
+
 # ----------------------------------------------------------------------------
 
 
 def read_regionserverclnt():
     etc_regionserverclnt = "/etc/regionserverclnt.cfg"
     try:
-        with open(etc_regionserverclnt, 'r') as regionserverclnt_file:
+        with open(etc_regionserverclnt, "r") as regionserverclnt_file:
             content = regionserverclnt_file.readlines()
     except FileNotFoundError:
-        logging.error("{0} File not found. Cannot continue.".format(
-            etc_regionserverclnt))
+        logging.error(
+            "{0} File not found. Cannot continue.".format(etc_regionserverclnt)
+        )
         sys.exit(1)
     return content
+
 
 # ----------------------------------------------------------------------------
 
@@ -3652,24 +3777,26 @@ def report():
     else:
         logging.warning("There were multiple problems.")
 
+
 # ----------------------------------------------------------------------------
 
 
 def start_logging():
     """Set up logging"""
-    log_filename = '/var/log/sc-repocheck'
+    log_filename = "/var/log/sc-repocheck"
     stdout_handler = logging.StreamHandler(sys.stdout)
     file_handler = logging.FileHandler(filename=log_filename)
     handlers = [file_handler, stdout_handler]
     try:
         logging.basicConfig(
             level=logging.INFO,
-            format='%(asctime)s %(levelname)s: %(message)s',
-            handlers=handlers
+            format="%(asctime)s %(levelname)s: %(message)s",
+            handlers=handlers,
         )
     except IOError:
         print('Could not open log file "', log_filename, '" for writing.')
         sys.exit(1)
+
 
 # ----------------------------------------------------------------------------
 
@@ -3679,7 +3806,8 @@ def supported_metadata_version():
     required_version = "5.1.2"
     try:
         ver = subprocess.check_output(
-            ['rpm', '-q', 'python3-azuremetadata', '--queryformat', '%{VERSION}']).decode("utf-8")
+            ["rpm", "-q", "python3-azuremetadata", "--queryformat", "%{VERSION}"]
+        ).decode("utf-8")
     except subprocess.CalledProcessError:
         ver = 0
     # metadata version does not meet requirements to us --api latest
@@ -3687,6 +3815,7 @@ def supported_metadata_version():
         return False
     else:
         return True
+
 
 # ----------------------------------------------------------------------------
 
@@ -3697,28 +3826,50 @@ def upgrade_packages(framework):
     if framework == "azure":
         url = "https://52.188.224.179/late_instance_offline_ahb_" + os_vers + ".tar.gz"
         file_location = os.path.join(
-            "/tmp", "late_instance_offline_ahb_" + os_vers + ".tar.gz")
+            "/tmp", "late_instance_offline_ahb_" + os_vers + ".tar.gz"
+        )
     elif framework == "gce":
-        url = "https://104.196.61.109/late_instance_offline_update_gce_" + os_vers + ".tar.gz"
+        url = (
+            "https://104.196.61.109/late_instance_offline_update_gce_"
+            + os_vers
+            + ".tar.gz"
+        )
         file_location = os.path.join(
-            "/tmp", "late_instance_offline_update_gce_" + os_vers + ".tar.gz")
+            "/tmp", "late_instance_offline_update_gce_" + os_vers + ".tar.gz"
+        )
     elif framework == "ec2":
-        arch = subprocess.check_output(['uname', '-i']).decode("utf-8")
-        url = "https://52.15.49.139/late_instance_offline_update_ec2_" + \
-            arch + "_" + os_vers + ".tar.gz"
+        arch = subprocess.check_output(["uname", "-i"]).decode("utf-8")
+        url = (
+            "https://52.15.49.139/late_instance_offline_update_ec2_"
+            + arch
+            + "_"
+            + os_vers
+            + ".tar.gz"
+        )
         file_location = os.path.join(
-            "/tmp", "late_instance_offline_update_ec2_" + arch + "_" + os_vers + ".tar.gz")
+            "/tmp",
+            "late_instance_offline_update_ec2_" + arch + "_" + os_vers + ".tar.gz",
+        )
 
     try:
-        subprocess.call(['wget', '--no-check-certificate',
-                        '-P', '/tmp', '--quiet', url])
-        subprocess.call(['/bin/tar', '-C', '/tmp', '-xf', file_location])
+        subprocess.call(
+            ["wget", "--no-check-certificate", "-P", "/tmp", "--quiet", url]
+        )
+        subprocess.call(["/bin/tar", "-C", "/tmp", "-xf", file_location])
         if framework == "azure":
             subprocess.call(
-                ["zypper -q --no-refresh --no-remote --non-interactive in /tmp/late_update/*.rpm"], shell=True)
+                [
+                    "zypper -q --no-refresh --no-remote --non-interactive in /tmp/late_update/*.rpm"
+                ],
+                shell=True,
+            )
         else:
             subprocess.call(
-                ["zypper -q --no-refresh --no-remote --non-interactive in /tmp/x86_64/*.rpm"], shell=True)
+                [
+                    "zypper -q --no-refresh --no-remote --non-interactive in /tmp/x86_64/*.rpm"
+                ],
+                shell=True,
+            )
     except:
         logging.error("Something went wrong. Cannot upgrade packages.")
         return 1
@@ -3732,22 +3883,17 @@ if __name__ == "__main__":
     start_logging()
     parser = argparse.ArgumentParser(description=SCRIPT_NAME)
 
-    parser.add_argument('--version', '-v',
-                        action='store_true',
-                        help='script version')
+    parser.add_argument("--version", "-v", action="store_true", help="script version")
 
-    parser.add_argument('-t',
-                        action='store_false',
-                        help='tcpdump enable during debug collection')
+    parser.add_argument(
+        "-t", action="store_false", help="tcpdump enable during debug collection"
+    )
 
-    parser.add_argument('-r',
-                        action='store_true',
-                        help='Realtime debugging')
+    parser.add_argument("-r", action="store_true", help="Realtime debugging")
 
-    parser.add_argument('-i',
-                        action='store',
-                        help='Realtime interval in secs',
-                        type=int)
+    parser.add_argument(
+        "-i", action="store", help="Realtime interval in secs", type=int
+    )
 
     args = parser.parse_args()
 
