@@ -1,6 +1,6 @@
 name: "Perform lint"
 
-on: [ push ]
+on: [push]
 
 jobs:
   lint:
@@ -12,7 +12,3 @@ jobs:
         uses: actions/setup-python@v5
       - name: flake8 lint
         uses: py-actions/flake8@v2
-
-
-
-
