@@ -1,0 +1,18 @@
+name: "Perform lint"
+
+on: [ push ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out repository
+        uses: actions/checkout@v4
+      - name: setup python
+        uses: actions/setup-python@v5
+      - name: flake8 lint
+        uses: py-actions/flake8@v2
+
+
+
+
